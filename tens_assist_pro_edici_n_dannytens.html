@@ -1,0 +1,2163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TENS Assist Pro · dannytens | Asistente Clínico Personal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastel: {
+                            50: '#fff5f7',
+                            100: '#fde8ed',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d'
+                        },
+                        dulce: {
+                            crema: '#fffbf5',
+                            lila: '#f5f3ff',
+                            menta: '#f0fdf9',
+                            rosa: '#fdf2f4'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        body {
+            font-family: 'Quicksand', 'Inter', sans-serif;
+            background-color: #fff8fa;
+        }
+        /* Custom scrollbar in soft rose pastel */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fdf2f4;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fbcfe8;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f472b6;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased h-screen flex flex-col md:flex-row overflow-hidden bg-[#fff8fa]">
+
+    <!-- Mobile Top Navigation Header -->
+    <header class="md:hidden bg-white/90 backdrop-blur-md border-b border-pink-100 px-4 py-3 flex items-center justify-between no-print shadow-sm z-30">
+        <div class="flex items-center space-x-2">
+            <div class="bg-gradient-to-tr from-pink-400 to-rose-400 text-white p-2 rounded-2xl shadow-sm shadow-pink-200">
+                <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <span class="font-bold text-slate-800 text-base tracking-tight flex items-center gap-1.5">
+                    TENS<span class="text-pink-500">Assist</span>
+                    <span class="text-[10px] bg-pink-100 text-pink-700 font-bold px-2 py-0.5 rounded-full border border-pink-200">dannytens</span>
+                </span>
+            </div>
+        </div>
+        <button id="mobileMenuBtn" class="p-2 rounded-xl text-slate-600 hover:bg-pink-50">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out z-40 w-72 bg-white/95 backdrop-blur-md border-r border-pink-100 flex flex-col justify-between shadow-xl md:shadow-none no-print">
+        <div>
+            <!-- Brand Logo & Indelible dannytens Seal -->
+            <div class="p-5 border-b border-pink-100/80 bg-gradient-to-b from-pink-50/60 to-transparent">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gradient-to-tr from-pink-400 via-rose-400 to-fuchsia-400 text-white p-2.5 rounded-2xl shadow-md shadow-pink-200 ring-2 ring-pink-100">
+                        <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-1.5">
+                            <h1 class="font-bold text-slate-900 leading-none text-base">TENS Assist</h1>
+                            <span class="text-[10px] bg-pink-100 text-pink-700 px-1.5 py-0.5 rounded-md font-bold">PRO</span>
+                        </div>
+                        <div class="mt-1 flex items-center space-x-1 text-xs">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-pink-500"></i>
+                            <span class="font-bold text-pink-600 tracking-wide">by dannytens</span>
+                        </div>
+                    </div>
+                    <button id="closeSidebarBtn" class="md:hidden ml-auto text-slate-400 hover:text-slate-600">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+                <!-- Verified Author Badge -->
+                <div class="mt-3.5 bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200/80 rounded-xl px-3 py-2 flex items-center justify-between">
+                    <div class="flex items-center space-x-1.5 text-[11px] text-pink-800 font-semibold">
+                        <i data-lucide="badge-check" class="w-4 h-4 text-pink-500"></i>
+                        <span>Licencia Exclusiva</span>
+                    </div>
+                    <span class="text-[10px] bg-white text-pink-600 font-bold px-2 py-0.5 rounded-full shadow-xs border border-pink-100">dannytens</span>
+                </div>
+            </div>
+
+            <!-- Navigation Links in Soft Pink / Lilac style -->
+            <nav class="p-4 space-y-1.5">
+                <button onclick="switchTab('triage')" id="nav-triage" class="nav-item w-full flex items-center space-x-3 px-3.5 py-3 rounded-2xl font-semibold text-xs md:text-sm transition-all duration-200 bg-pink-50 text-pink-700 shadow-sm border border-pink-200/60">
+                    <i data-lucide="git-pull-request-draft" class="w-5 h-5 text-pink-500"></i>
+                    <span>Evaluador & Protocolos</span>
+                </button>
+
+                <button onclick="switchTab('fichas')" id="nav-fichas" class="nav-item w-full flex items-center space-x-3 px-3.5 py-3 rounded-2xl font-semibold text-xs md:text-sm transition-all duration-200 text-slate-600 hover:bg-pink-50/70 hover:text-pink-700">
+                    <i data-lucide="clipboard-list" class="w-5 h-5 text-rose-400"></i>
+                    <span>Fichas Clínicas</span>
+                </button>
+
+                <button onclick="switchTab('whatsapp')" id="nav-whatsapp" class="nav-item w-full flex items-center space-x-3 px-3.5 py-3 rounded-2xl font-semibold text-xs md:text-sm transition-all duration-200 text-slate-600 hover:bg-pink-50/70 hover:text-pink-700">
+                    <div class="relative">
+                        <i data-lucide="message-circle-heart" class="w-5 h-5 text-pink-500"></i>
+                        <span id="waBadgeAlert" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white"></span>
+                    </div>
+                    <span>Informes Familiares (WA)</span>
+                </button>
+
+                <button onclick="switchTab('medicamentos')" id="nav-medicamentos" class="nav-item w-full flex items-center space-x-3 px-3.5 py-3 rounded-2xl font-semibold text-xs md:text-sm transition-all duration-200 text-slate-600 hover:bg-pink-50/70 hover:text-pink-700">
+                    <i data-lucide="pill" class="w-5 h-5 text-fuchsia-400"></i>
+                    <span>Guía Farmacológica (RAM)</span>
+                </button>
+
+                <button onclick="switchTab('interacciones')" id="nav-interacciones" class="nav-item w-full flex items-center space-x-3 px-3.5 py-3 rounded-2xl font-semibold text-xs md:text-sm transition-all duration-200 text-slate-600 hover:bg-pink-50/70 hover:text-pink-700">
+                    <i data-lucide="shield-alert" class="w-5 h-5 text-purple-400"></i>
+                    <span>Interacciones Medicamentosas</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Sidebar Footer Warning with dannytens Protection Stamp -->
+        <div class="p-4 border-t border-pink-100 bg-pink-50/30">
+            <div class="p-3 bg-white rounded-2xl border border-pink-200/80 text-pink-900 text-[11px] leading-relaxed shadow-xs space-y-1">
+                <div class="flex items-center space-x-1.5 font-bold text-pink-700">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-pink-500 shrink-0"></i>
+                    <span>Propiedad de dannytens</span>
+                </div>
+                <p class="text-slate-600">Herramienta clínica personalizada. Prohibida su copia, modificación o uso sin autorización de <strong>dannytens</strong>.</p>
+            </div>
+            <div class="mt-2.5 text-center">
+                <span class="text-[10px] text-pink-400 font-semibold tracking-wide">© 2026 · App Clínica dannytens</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Overlay for Mobile Sidebar -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-pink-950/20 backdrop-blur-xs z-30 hidden md:hidden"></div>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-y-auto flex flex-col h-full bg-[#fff8fa]">
+
+        <!-- Top Indelible Signature Banner -->
+        <div class="bg-gradient-to-r from-pink-100 via-rose-50 to-purple-50 border-b border-pink-200/60 px-4 py-2 flex items-center justify-between text-xs text-pink-800 no-print">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="heart" class="w-3.5 h-3.5 text-pink-500 fill-pink-300"></i>
+                <span class="font-bold">TENS Assist Pro · Sistema Clínico Oficial</span>
+                <span class="hidden sm:inline text-pink-400">|</span>
+                <span class="hidden sm:inline text-pink-700">Diseñado para la labor diaria con cariño y rigor técnico</span>
+            </div>
+            <div class="flex items-center space-x-1.5 font-bold text-pink-600 bg-white/90 px-2.5 py-0.5 rounded-full shadow-xs border border-pink-200">
+                <i data-lucide="user-check" class="w-3 h-3 text-pink-500"></i>
+                <span>dannytens</span>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 1: EVALUADOR DE SÍNTOMAS & PROTOCOLOS  -->
+        <!-- ========================================== -->
+        <section id="tab-triage" class="tab-content p-4 md:p-8 max-w-6xl mx-auto w-full">
+            <header class="mb-6">
+                <div class="flex items-center space-x-2 text-pink-600 text-xs font-bold tracking-wider uppercase">
+                    <i data-lucide="activity" class="w-4 h-4"></i>
+                    <span>Triage Orientativo · dannytens</span>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-1">Evaluador de Síntomas & Protocolo de Actuación</h2>
+                <p class="text-slate-600 text-xs md:text-sm mt-1">Busca el cuadro del paciente para conocer causas probables, señales de alarma y tus acciones inmediatas como TENS.</p>
+            </header>
+
+            <!-- Quick symptom filters -->
+            <div class="bg-white/90 p-4.5 rounded-2xl shadow-sm border border-pink-100 mb-6">
+                <label class="block text-xs font-bold text-pink-600 uppercase tracking-wider mb-2">Búsqueda rápida de motivo de consulta:</label>
+                <div class="relative">
+                    <i data-lucide="search" class="w-5 h-5 text-pink-300 absolute left-3.5 top-3"></i>
+                    <input type="text" id="symptomSearch" placeholder="Ej. Dolor torácico, hipotensión, fiebre, dificultad respiratoria, cefalea..." class="w-full pl-11 pr-4 py-2.5 rounded-2xl border border-pink-200/80 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 bg-pink-50/30 focus:bg-white transition-all">
+                </div>
+
+                <div class="mt-3 flex flex-wrap gap-2" id="quickSymptomTags">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Symptom Detail Card Display -->
+            <div id="symptomResultContainer" class="space-y-6">
+                <!-- Fallback empty state -->
+                <div id="symptomEmptyState" class="bg-white/80 rounded-2xl border border-dashed border-pink-200 p-10 text-center">
+                    <div class="w-14 h-14 bg-pink-50 text-pink-500 rounded-full flex items-center justify-center mx-auto mb-3 ring-4 ring-pink-100">
+                        <i data-lucide="stethoscope" class="w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-slate-800 font-bold text-base md:text-lg">Selecciona un cuadro clínico</h3>
+                    <p class="text-slate-500 text-xs md:text-sm max-w-md mx-auto mt-1">Haz clic en alguna de las etiquetas superiores o escribe en el buscador para visualizar el análisis y el plan de acción inmediato desarrollado para dannytens.</p>
+                </div>
+
+                <!-- Dynamic Detail Card is injected here -->
+                <div id="symptomDetailView" class="hidden"></div>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- TAB 2: FICHAS CLÍNICAS Y REGISTRO PACIENTES -->
+        <!-- ========================================== -->
+        <section id="tab-fichas" class="tab-content hidden p-4 md:p-8 max-w-6xl mx-auto w-full">
+            <header class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2 text-rose-500 text-xs font-bold tracking-wider uppercase">
+                        <i data-lucide="clipboard-heart" class="w-4 h-4"></i>
+                        <span>Registro Clínico Exclusivo · dannytens</span>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-1">Fichas Clínicas de Pacientes</h2>
+                    <p class="text-slate-600 text-xs md:text-sm">Control diario de signos vitales, antecedentes, alergias y evolución de enfermería.</p>
+                </div>
+                <button onclick="openPatientModal()" class="inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 text-white px-4 py-2.5 rounded-2xl font-bold shadow-md shadow-pink-200 transition-all text-xs md:text-sm">
+                    <i data-lucide="user-plus" class="w-4 h-4"></i>
+                    <span>Nueva Ficha Clínica</span>
+                </button>
+            </header>
+
+            <!-- Search and Filter Bar -->
+            <div class="bg-white/90 p-3.5 rounded-2xl shadow-sm border border-pink-100 mb-6 flex flex-col md:flex-row gap-3">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="w-4 h-4 text-pink-300 absolute left-3.5 top-3"></i>
+                    <input type="text" id="patientSearchInput" onkeyup="renderPatientsList()" placeholder="Buscar por Nombre, RUT o Alergia..." class="w-full pl-10 pr-4 py-2 rounded-xl border border-pink-200 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 bg-pink-50/20 focus:bg-white">
+                </div>
+                <div class="flex items-center space-x-2 text-xs text-pink-700 px-2">
+                    <span id="patientCountBadge" class="bg-pink-50 font-bold px-3 py-1.5 rounded-xl border border-pink-200">0 Fichas guardadas</span>
+                </div>
+            </div>
+
+            <!-- Patient Records Grid -->
+            <div id="patientListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Patient cards rendered via JS -->
+            </div>
+        </section>
+
+        <!-- ================================================== -->
+        <!-- TAB 3: INFORMES PARA FAMILIARES VÍA WHATSAPP       -->
+        <!-- ================================================== -->
+        <section id="tab-whatsapp" class="tab-content hidden p-4 md:p-8 max-w-6xl mx-auto w-full">
+            <header class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2 text-pink-600 text-xs font-bold tracking-wider uppercase">
+                        <i data-lucide="message-square-heart" class="w-4 h-4"></i>
+                        <span>Comunicación Empática con Familias · dannytens</span>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-1">Informes Familiares vía WhatsApp</h2>
+                    <p class="text-slate-600 text-xs md:text-sm">Redacta con ayuda de IA reportes dulces y tranquilizadores cada 3 días con la firma oficial de dannytens.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center px-3 py-1.5 rounded-2xl text-xs font-bold bg-pink-50 text-pink-700 border border-pink-200 shadow-xs">
+                        <i data-lucide="heart" class="w-3.5 h-3.5 mr-1.5 text-pink-500 fill-pink-400"></i> Frecuencia: Cada 3 días
+                    </span>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Columna Izquierda: Selección de Paciente y Configuración de Envíos -->
+                <div class="lg:col-span-5 space-y-5">
+                    <!-- Selector de Paciente -->
+                    <div class="bg-white/90 p-5 rounded-2xl shadow-sm border border-pink-100">
+                        <h3 class="font-bold text-slate-900 text-sm mb-3 flex items-center space-x-2">
+                            <i data-lucide="user-check" class="w-4 h-4 text-pink-500"></i>
+                            <span>1. Seleccionar Paciente</span>
+                        </h3>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Paciente registrado:</label>
+                            <select id="waPatientSelect" onchange="onSelectPatientForWA()" class="w-full px-3 py-2.5 rounded-xl border border-pink-200 text-xs md:text-sm bg-pink-50/30 focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                                <!-- Llenado dinámicamente -->
+                            </select>
+                        </div>
+
+                        <!-- Datos del Familiar de Contacto -->
+                        <div class="mt-4 pt-4 border-t border-pink-100 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Familiar / Apoderado:</label>
+                                <input type="text" id="waContactName" placeholder="Ej. Hija María" class="w-full px-3 py-2 rounded-xl border border-pink-200 text-xs focus:outline-none focus:ring-2 focus:ring-pink-300 bg-pink-50/20">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">WhatsApp (+569...):</label>
+                                <input type="tel" id="waContactPhone" placeholder="56912345678" class="w-full px-3 py-2 rounded-xl border border-pink-200 text-xs focus:outline-none focus:ring-2 focus:ring-pink-300 bg-pink-50/20">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configuración de Automatización / Frecuencia -->
+                    <div class="bg-white/90 p-5 rounded-2xl shadow-sm border border-pink-100 space-y-4">
+                        <h3 class="font-bold text-slate-900 text-sm flex items-center space-x-2">
+                            <i data-lucide="calendar-heart" class="w-4 h-4 text-pink-500"></i>
+                            <span>2. Frecuencia y Modo de Envío</span>
+                        </h3>
+
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <label class="border border-pink-200 rounded-2xl p-2.5 flex items-center space-x-2 cursor-pointer has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50">
+                                <input type="radio" name="waFrequency" value="3days" checked class="text-pink-600 focus:ring-pink-400">
+                                <div>
+                                    <span class="font-bold text-slate-800 block">Cada 3 Días</span>
+                                    <span class="text-[10px] text-pink-500">Recomendado</span>
+                                </div>
+                            </label>
+                            <label class="border border-pink-200 rounded-2xl p-2.5 flex items-center space-x-2 cursor-pointer has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50">
+                                <input type="radio" name="waFrequency" value="daily" class="text-pink-600 focus:ring-pink-400">
+                                <div>
+                                    <span class="font-bold text-slate-800 block">Diario</span>
+                                    <span class="text-[10px] text-slate-500">Cuidados agudos</span>
+                                </div>
+                            </label>
+                            <label class="border border-pink-200 rounded-2xl p-2.5 flex items-center space-x-2 cursor-pointer has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50">
+                                <input type="radio" name="waFrequency" value="weekly" class="text-pink-600 focus:ring-pink-400">
+                                <div>
+                                    <span class="font-bold text-slate-800 block">Semanal</span>
+                                    <span class="text-[10px] text-slate-500">Crónicos</span>
+                                </div>
+                            </label>
+                            <label class="border border-pink-200 rounded-2xl p-2.5 flex items-center space-x-2 cursor-pointer has-[:checked]:border-pink-500 has-[:checked]:bg-pink-50">
+                                <input type="radio" name="waFrequency" value="manual" class="text-pink-600 focus:ring-pink-400">
+                                <div>
+                                    <span class="font-bold text-slate-800 block">Solo Manual</span>
+                                    <span class="text-[10px] text-slate-500">A demanda</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Selector de Modo: Manual vs Recordatorio -->
+                        <div class="p-3 bg-pink-50/50 rounded-2xl border border-pink-200/80 space-y-2">
+                            <span class="block text-xs font-bold text-pink-900">Modo de despacho:</span>
+                            <div class="flex flex-col gap-1.5 text-xs">
+                                <label class="flex items-start space-x-2 cursor-pointer">
+                                    <input type="radio" name="waDispatchMode" value="review" checked class="mt-0.5 text-pink-600">
+                                    <span class="text-slate-700"><strong>Revisión de dannytens:</strong> Me avisa cuando toque y yo lo edito/apruebo antes de enviarlo.</span>
+                                </label>
+                                <label class="flex items-start space-x-2 cursor-pointer">
+                                    <input type="radio" name="waDispatchMode" value="direct" class="mt-0.5 text-pink-600">
+                                    <span class="text-slate-700"><strong>Alerta directa de envío:</strong> Genera el mensaje y abre de inmediato WhatsApp.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Monitor de Próximo Envío -->
+                        <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 p-3 rounded-2xl flex items-center justify-between text-xs">
+                            <div>
+                                <span class="text-pink-800 font-bold block">Próximo informe programado:</span>
+                                <span id="waNextScheduledDate" class="text-rose-900 font-extrabold text-xs md:text-sm">--</span>
+                            </div>
+                            <button onclick="saveScheduleSettings()" class="px-3.5 py-1.5 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-xl shadow-xs text-xs transition-colors">
+                                Guardar Pauta
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Datos Clínicos Rápidos de Contexto -->
+                    <div id="waPatientSummaryCard" class="bg-white/90 p-4 rounded-2xl shadow-sm border border-pink-100 text-xs space-y-2">
+                        <span class="text-pink-400 font-bold uppercase text-[10px] block">Parámetros actuales a incluir:</span>
+                        <div id="waPatientSummaryContent" class="text-slate-600 leading-relaxed">Seleccione un paciente para cargar su información.</div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Generador Asistido por IA & Edición de Mensaje -->
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="bg-white/90 p-6 rounded-2xl shadow-sm border border-pink-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-slate-900 text-base flex items-center space-x-2">
+                                    <i data-lucide="sparkles" class="w-5 h-5 text-pink-500"></i>
+                                    <span>Redacción Empática Asistida</span>
+                                </h3>
+                                <button onclick="generateAIReport()" id="btnGenerateAI" class="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-pink-500 via-rose-400 to-purple-400 hover:from-pink-600 hover:to-rose-500 text-white rounded-xl text-xs font-bold shadow-md shadow-pink-200 transition-all">
+                                    <i data-lucide="wand-2" class="w-3.5 h-3.5"></i>
+                                    <span>Generar con dannytens</span>
+                                </button>
+                            </div>
+
+                            <!-- Opciones de Tono y Enfoque del Mensaje -->
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-4 text-xs">
+                                <div>
+                                    <label class="block text-slate-600 text-[11px] mb-1 font-bold">Estado de Ánimo:</label>
+                                    <select id="waMood" class="w-full px-2.5 py-1.5 rounded-xl border border-pink-200 bg-pink-50/30 text-xs focus:outline-none focus:ring-1 focus:ring-pink-300">
+                                        <option value="Tranquilo, de muy buen humor y sonriente">Tranquilo / Sonriente</option>
+                                        <option value="Colaborador, alegre y comunicativo">Colaborador / Alegre</option>
+                                        <option value="Descansando placenteramente y con buen sueño">Descansando / Sueño reparador</option>
+                                        <option value="Con molestias leves atendidas con cariño">Molestia leve atendida</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-slate-600 text-[11px] mb-1 font-bold">Alimentación / Apetito:</label>
+                                    <select id="waAppetite" class="w-full px-2.5 py-1.5 rounded-xl border border-pink-200 bg-pink-50/30 text-xs focus:outline-none focus:ring-1 focus:ring-pink-300">
+                                        <option value="Comió con excelente apetito su colación y almuerzo">Excelente apetito</option>
+                                        <option value="Comió porción adecuada y toleró muy bien sus líquidos">Apetito normal / Líquidos OK</option>
+                                        <option value="Apetito liviano pero hidratándose muy bien">Apetito liviano / Hidratado</option>
+                                        <option value="Con régimen especial indicado por su médico">Régimen médico especial</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-slate-600 text-[11px] mb-1 font-bold">Movilidad / Aseo:</label>
+                                    <select id="waHygiene" class="w-full px-2.5 py-1.5 rounded-xl border border-pink-200 bg-pink-50/30 text-xs focus:outline-none focus:ring-1 focus:ring-pink-300">
+                                        <option value="Aseo y confort completo, muy cómodo y perfumado en cama">Aseo y confort completo</option>
+                                        <option value="Caminó por la habitación acompañado de su TENS">Deambuló con apoyo</option>
+                                        <option value="Reposo asistido con cambios de posición frecuentes">Reposo asistido preventivo</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Caja del mensaje redactado editable -->
+                            <div class="relative">
+                                <div class="flex items-center justify-between text-xs text-slate-500 mb-1.5">
+                                    <label class="font-bold text-pink-700">Mensaje con firma de dannytens (editable):</label>
+                                    <button onclick="copyDraftToClipboard()" class="text-pink-600 hover:text-pink-700 flex items-center space-x-1 text-[11px] font-semibold">
+                                        <i data-lucide="copy" class="w-3 h-3"></i>
+                                        <span>Copiar texto</span>
+                                    </button>
+                                </div>
+                                <textarea id="waMessageDraft" rows="11" placeholder="Presiona 'Generar con dannytens' o escribe tu reporte personalizado aquí..." class="w-full p-4 rounded-2xl border border-pink-200 text-xs sm:text-sm font-sans focus:outline-none focus:ring-2 focus:ring-pink-300 bg-pink-50/20 leading-relaxed text-slate-700"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Acción: Enviar a WhatsApp & Registrar -->
+                        <div class="mt-4 pt-4 border-t border-pink-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="text-[11px] text-pink-600 flex items-center space-x-1.5">
+                                <i data-lucide="heart" class="w-3.5 h-3.5 text-pink-500 fill-pink-300 shrink-0"></i>
+                                <span>El mensaje incluye tu firma oficial <strong>dannytens</strong>.</span>
+                            </div>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <button onclick="sendToWhatsAppDirect()" class="w-full sm:w-auto px-5 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-100 flex items-center justify-center space-x-2 transition-all">
+                                    <i data-lucide="send" class="w-4 h-4"></i>
+                                    <span>Enviar a WhatsApp</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Historial de Informes Enviados a este Paciente -->
+                    <div class="bg-white/90 p-5 rounded-2xl shadow-sm border border-pink-100">
+                        <h4 class="font-bold text-pink-900 text-xs uppercase tracking-wider mb-3 flex items-center space-x-2">
+                            <i data-lucide="history" class="w-4 h-4 text-pink-400"></i>
+                            <span>Historial de Informes dannytens</span>
+                        </h4>
+                        <div id="waHistoryList" class="space-y-2.5 max-h-52 overflow-y-auto pr-1">
+                            <!-- Inyectado por JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 4: GUÍA DE MEDICAMENTOS Y RAM         -->
+        <!-- ========================================== -->
+        <section id="tab-medicamentos" class="tab-content hidden p-4 md:p-8 max-w-6xl mx-auto w-full">
+            <header class="mb-6">
+                <div class="flex items-center space-x-2 text-fuchsia-500 text-xs font-bold tracking-wider uppercase">
+                    <i data-lucide="book-heart" class="w-4 h-4"></i>
+                    <span>Farmacología Práctica · dannytens</span>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-1">Guía Farmacológica & RAM</h2>
+                <p class="text-slate-600 text-xs md:text-sm">Vías de administración, indicaciones, Reacciones Adversas Medicamentosas (RAM) y cuidados de enfermería clave.</p>
+            </header>
+
+            <!-- Drug Filter Bar -->
+            <div class="bg-white/90 p-4 rounded-2xl shadow-sm border border-pink-100 mb-6 flex flex-col md:flex-row gap-3">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="w-5 h-5 text-pink-300 absolute left-3.5 top-3"></i>
+                    <input type="text" id="drugSearchInput" onkeyup="filterDrugs()" placeholder="Buscar fármaco (ej. Paracetamol, Ciprofloxacino, Furosemida, Enalapril)..." class="w-full pl-11 pr-4 py-2.5 rounded-2xl border border-pink-200 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-pink-300 bg-pink-50/20 focus:bg-white">
+                </div>
+                <select id="drugCategorySelect" onchange="filterDrugs()" class="px-4 py-2.5 rounded-2xl border border-pink-200 text-xs md:text-sm bg-pink-50/30 focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                    <option value="ALL">Todas las Categorías</option>
+                    <option value="Analgésico / AINE">Analgésicos / AINEs / Opioides</option>
+                    <option value="Cardiovascular">Cardiovasculares / Antihipertensivos</option>
+                    <option value="Antibiótico">Antibióticos / Antimicrobianos</option>
+                    <option value="Endocrino">Endocrinología / Hipoglucemiantes</option>
+                    <option value="Gastrointestinal">Gastrointestinales</option>
+                    <option value="Respiratorio">Respiratorios</option>
+                </select>
+            </div>
+
+            <!-- Drug List -->
+            <div id="drugListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Drug cards dynamically created -->
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- TAB 5: INTERACCIONES MEDICAMENTOSAS        -->
+        <!-- ========================================== -->
+        <section id="tab-interacciones" class="tab-content hidden p-4 md:p-8 max-w-6xl mx-auto w-full">
+            <header class="mb-6">
+                <div class="flex items-center space-x-2 text-rose-500 text-xs font-bold tracking-wider uppercase">
+                    <i data-lucide="alert-octagon" class="w-4 h-4"></i>
+                    <span>Seguridad Clínica del Paciente · dannytens</span>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mt-1">Verificador de Interacciones Farmacológicas</h2>
+                <p class="text-slate-600 text-xs md:text-sm">Selecciona dos o más fármacos para verificar combinaciones de riesgo, duplicidad tóxica o contraindicaciones conjuntas.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Drug Selector Panel -->
+                <div class="lg:col-span-1 bg-white/90 p-5 rounded-2xl shadow-sm border border-pink-100 flex flex-col h-fit">
+                    <h3 class="font-bold text-slate-900 text-sm mb-1 flex items-center justify-between">
+                        <span>Fármacos a contrastar</span>
+                        <span id="selectedCountBadge" class="text-xs bg-pink-100 text-pink-800 font-bold px-2.5 py-0.5 rounded-full">0 seleccionados</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-3">Marca los medicamentos que recibe el paciente:</p>
+
+                    <!-- Search inside interactions -->
+                    <div class="relative mb-3">
+                        <i data-lucide="search" class="w-4 h-4 text-pink-300 absolute left-3 top-2.5"></i>
+                        <input type="text" id="interactionFilterInput" onkeyup="filterInteractionList()" placeholder="Filtrar nombres..." class="w-full pl-9 pr-3 py-1.5 rounded-xl border border-pink-200 text-xs focus:outline-none focus:ring-1 focus:ring-pink-300 bg-pink-50/20">
+                    </div>
+
+                    <div id="interactionCheckboxes" class="space-y-1 max-h-80 overflow-y-auto pr-1 text-xs divide-y divide-pink-50">
+                        <!-- Checkboxes populated by JS -->
+                    </div>
+
+                    <button onclick="clearSelectedInteractions()" class="mt-4 text-xs text-rose-500 hover:text-rose-600 font-bold text-center py-2 border border-rose-200 rounded-xl hover:bg-rose-50 transition-colors">
+                        Limpiar selección
+                    </button>
+                </div>
+
+                <!-- Analysis Results Panel -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div id="interactionResultsPlaceholder" class="bg-white/80 rounded-2xl border border-dashed border-pink-200 p-10 text-center">
+                        <div class="w-14 h-14 bg-pink-50 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-3 ring-4 ring-pink-100">
+                            <i data-lucide="shield-check" class="w-7 h-7"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base">Sin fármacos seleccionados</h4>
+                        <p class="text-slate-500 text-xs mt-1 max-w-sm mx-auto">Selecciona al menos 2 medicamentos en el panel izquierdo para evaluar posibles interacciones según la base de dannytens.</p>
+                    </div>
+
+                    <div id="interactionResultsContent" class="space-y-4 hidden">
+                        <!-- Populated dynamically with alerts and safety recommendations -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- MODAL: REGISTRO / EDICIÓN DE FICHA CLÍNICA -->
+    <!-- ========================================== -->
+    <div id="patientModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
+        <div class="bg-white rounded-3xl shadow-2xl border border-pink-100 w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden my-auto">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-pink-100 flex items-center justify-between bg-gradient-to-r from-pink-50 via-rose-50 to-white">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-pink-500 text-white p-2 rounded-2xl shadow-xs">
+                        <i data-lucide="clipboard-heart" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 id="modalPatientTitle" class="font-bold text-slate-900 text-base md:text-lg">Nueva Ficha de Paciente</h3>
+                        <span class="text-[10px] text-pink-600 font-bold">Registro Clínico · dannytens</span>
+                    </div>
+                </div>
+                <button onclick="closePatientModal()" class="text-slate-400 hover:text-pink-600 p-1.5 rounded-xl hover:bg-pink-50">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form Body -->
+            <form id="patientForm" onsubmit="savePatientRecord(event)" class="p-6 overflow-y-auto space-y-5 text-xs md:text-sm">
+                <input type="hidden" id="patientRecordId">
+
+                <!-- Datos Personales -->
+                <div>
+                    <h4 class="text-xs font-bold text-pink-600 uppercase tracking-wider mb-2">1. Identificación del Paciente</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Nombre Completo *</label>
+                            <input type="text" id="pName" required placeholder="Ej. Juan Pérez González" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:ring-2 focus:ring-pink-300 focus:outline-none bg-pink-50/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">RUT / Identificación *</label>
+                            <input type="text" id="pRUT" required placeholder="12.345.678-9" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:ring-2 focus:ring-pink-300 focus:outline-none bg-pink-50/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Edad</label>
+                            <input type="number" id="pAge" placeholder="Ej. 68" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:ring-2 focus:ring-pink-300 focus:outline-none bg-pink-50/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Sexo</label>
+                            <select id="pSex" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:ring-2 focus:ring-pink-300 focus:outline-none bg-white">
+                                <option value="Femenino">Femenino</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Otro">Otro / No especifica</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Cama / Box</label>
+                            <input type="text" id="pBed" placeholder="Box 4 / Cama 12" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:ring-2 focus:ring-pink-300 focus:outline-none bg-pink-50/20">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Antecedentes y Alergias -->
+                <div class="pt-2 border-t border-pink-100">
+                    <h4 class="text-xs font-bold text-pink-600 uppercase tracking-wider mb-2">2. Antecedentes & Alergias</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-rose-700 mb-1">Alergias (¡Atención!)</label>
+                            <input type="text" id="pAllergies" placeholder="Ej. Penicilina, AINEs, o 'Sin alergias'" class="w-full px-3 py-2 rounded-xl border border-rose-200 text-rose-800 placeholder-slate-400 focus:ring-2 focus:ring-rose-300 focus:outline-none font-semibold bg-rose-50/30">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Antecedentes Mórbidos</label>
+                            <input type="text" id="pHistory" placeholder="Ej. HTA, DM2, Asma, ERC, FA" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:ring-2 focus:ring-pink-300 focus:outline-none bg-pink-50/20">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contacto Familiar para WhatsApp -->
+                <div class="pt-2 border-t border-pink-100 bg-pink-50/40 p-4 rounded-2xl border border-pink-200/70">
+                    <h4 class="text-xs font-bold text-pink-800 uppercase tracking-wider mb-2 flex items-center justify-between">
+                        <span>Contacto Familiar (Informes de dannytens)</span>
+                        <span class="text-[10px] font-bold text-pink-600 bg-white px-2 py-0.5 rounded-full border border-pink-200">Cada 3 días</span>
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">Nombre Familiar / Vínculo</label>
+                            <input type="text" id="pContactName" placeholder="Ej. Carmen Gloria (Hija)" class="w-full px-3 py-2 text-xs rounded-xl border border-pink-200 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">WhatsApp (+569...)</label>
+                            <input type="tel" id="pContactPhone" placeholder="Ej. 56987654321" class="w-full px-3 py-2 text-xs rounded-xl border border-pink-200 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signos Vitales -->
+                <div class="pt-2 border-t border-pink-100 bg-rose-50/30 p-4 rounded-2xl border border-rose-100">
+                    <h4 class="text-xs font-bold text-pink-900 uppercase tracking-wider mb-2 flex items-center justify-between">
+                        <span>3. Control de Signos Vitales (CSV)</span>
+                        <span class="text-[10px] font-bold text-pink-600">Parámetros actuales</span>
+                    </h4>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600">Presión Arterial (PA)</label>
+                            <input type="text" id="pPA" placeholder="120/80 mmHg" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-pink-200 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600">Frec. Cardíaca (FC)</label>
+                            <input type="number" id="pFC" placeholder="78 lpm" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-pink-200 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600">Frec. Respiratoria (FR)</label>
+                            <input type="number" id="pFR" placeholder="16 rpm" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-pink-200 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600">Saturación (SatO2)</label>
+                            <input type="number" id="pSat" placeholder="98 %" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-pink-200 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600">Temperatura (T°)</label>
+                            <input type="text" id="pTemp" placeholder="36.5 °C" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-pink-200 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600">Hemoglucotest (HGT)</label>
+                            <input type="number" id="pHGT" placeholder="105 mg/dL" class="w-full px-2.5 py-1.5 text-xs rounded-xl border border-pink-200 bg-white focus:outline-none focus:ring-2 focus:ring-pink-300">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medicamentos Indicados & Evolución -->
+                <div class="pt-2 border-t border-pink-100">
+                    <h4 class="text-xs font-bold text-pink-600 uppercase tracking-wider mb-2">4. Tratamiento & Observación dannytens</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Medicamentos Administrados / Indicados</label>
+                            <input type="text" id="pMeds" placeholder="Ej. Paracetamol 1g VO, Suero Fisiológico 0.9% 500cc EV" class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:ring-2 focus:ring-pink-300 focus:outline-none bg-pink-50/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Nota de Evolución / Procedimiento / Cuidados de Enfermería</label>
+                            <textarea id="pNotes" rows="3" placeholder="Paciente tranquilo, consciente y orientado en tiempo y espacio. Tolera vía oral. Cuidados realizados por dannytens..." class="w-full px-3 py-2 rounded-xl border border-pink-200 focus:ring-2 focus:ring-pink-300 focus:outline-none bg-pink-50/20"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer buttons -->
+                <div class="pt-4 border-t border-pink-100 flex justify-end space-x-3">
+                    <button type="button" onclick="closePatientModal()" class="px-4 py-2 rounded-2xl text-slate-600 hover:bg-pink-50 text-xs md:text-sm font-bold transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 text-white text-xs md:text-sm font-bold shadow-md shadow-pink-200 transition-all flex items-center space-x-1.5">
+                        <i data-lucide="save" class="w-4 h-4"></i>
+                        <span>Guardar Ficha</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL: VER DETALLE / IMPRIMIR FICHA CLÍNICA -->
+    <!-- ========================================== -->
+    <div id="viewPatientModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
+        <div class="bg-white rounded-3xl shadow-2xl border border-pink-100 w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden my-auto">
+            <div class="px-6 py-4 border-b border-pink-100 flex items-center justify-between bg-pink-50/50 no-print">
+                <div class="flex items-center space-x-2">
+                    <span class="font-bold text-slate-800 text-sm md:text-base">Ficha Clínica Detallada</span>
+                    <span class="text-[10px] bg-pink-100 text-pink-700 font-bold px-2 py-0.5 rounded-full border border-pink-200">dannytens</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="window.print()" class="px-3.5 py-1.5 bg-white hover:bg-pink-100 text-pink-700 rounded-xl text-xs font-bold border border-pink-200 flex items-center space-x-1.5 transition-colors shadow-xs">
+                        <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                        <span>Imprimir</span>
+                    </button>
+                    <button onclick="closeViewPatientModal()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-xl">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="viewPatientContent" class="p-6 overflow-y-auto space-y-4">
+                <!-- Populated via renderPatientView() -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Floating Notification Toast -->
+    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 bg-gradient-to-r from-pink-600 to-rose-500 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center space-x-2 text-xs md:text-sm transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none border border-pink-400">
+        <i id="toastIcon" data-lucide="heart" class="w-4 h-4 text-white fill-pink-200"></i>
+        <span id="toastMsg" class="font-bold">Acción exitosa · dannytens</span>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT: LOGIC & CLINICAL DATABASE     -->
+    <!-- ========================================== -->
+    <script>
+        // SIGNATURE CONSTANT: Inalterable signature of dannytens
+        const APP_AUTHOR = "dannytens";
+        const APP_TITLE = "TENS Assist Pro";
+        const SIGNATURE_SEAL = "Desarrollado con dedicación para dannytens · Propiedad Exclusiva";
+
+        // --- 1. CLINICAL KNOWLEDGE DATABASE (SYMPTOMS & PROTOCOLS) ---
+        const SYMPTOMS_DATA = [
+            {
+                id: "dolor_toracico",
+                name: "Dolor Torácico (Opresivo / Punzante)",
+                tags: ["Cardiovascular", "Prioridad 1", "Tórax"],
+                possibleCauses: [
+                    "Síndrome Coronario Agudo (Infarto Agudo al Miocardio / Angina)",
+                    "Crisis Hipertensiva con daño de órgano blanco",
+                    "Tromboembolismo Pulmonar (TEP)",
+                    "Disección Aórtica aguda",
+                    "Costocondritis / Dolor Musculoesquelético",
+                    "Reflujo Gastroesofágico severo o espasmo esofágico"
+                ],
+                redFlags: [
+                    "Dolor retroesternal opresivo irradiado a mandíbula, cuello, espalda o brazo izquierdo",
+                    "Acompañado de diaforesis profusa (sudoración fría), náuseas o sensación de muerte inminente",
+                    "Disnea súbita o saturación de oxígeno menor a 90%",
+                    "Inestabilidad hemodinámica (Hipotensión < 90/60 mmHg o arritmia)"
+                ],
+                actionsTENS: [
+                    "Mantener al paciente en reposo absoluto inmediato; colocar en posición Fowler o semi-Fowler (30° - 45°).",
+                    "Aviso urgente e inmediato a Enfermero(a) clínico(a) y Médico(a) de turno.",
+                    "Control exhaustivo de Signos Vitales completos (PA, FC, FR, SatO2, T°).",
+                    "Preparar y realizar Electrocardiograma (ECG) de 12 derivaciones en menos de 10 minutos según indicación médica.",
+                    "Instalación o verificación de vía venosa periférica (VVP) permeable de buen calibre (#18 o #20).",
+                    "Aporte de Oxigenoterapia SOS si la SatO2 es < 93% o según protocolo del centro."
+                ]
+            },
+            {
+                id: "disnea",
+                name: "Disnea / Dificultad Respiratoria Aguda",
+                tags: ["Respiratorio", "Prioridad 1", "Oxigenación"],
+                possibleCauses: [
+                    "Exacerbación de EPOC o Crisis Asmática",
+                    "Edema Agudo Pulmonar (EAP) cardiogénico",
+                    "Neumonía grave / Infección respiratoria baja",
+                    "Neumotórax a tensión",
+                    "Anafilaxia (asociada a estridor o rash)",
+                    "Tromboembolismo pulmonar (TEP)"
+                ],
+                redFlags: [
+                    "Uso marcado de musculatura accesoria (tiraje intercostal, aleteo nasal)",
+                    "Incapacidad para pronunciar oraciones completas (habla entrecortada)",
+                    "Cianosis peribucal o en lechos ungueales",
+                    "Estridor inspiratorio (obstrucción de vía aérea superior)",
+                    "SatO2 < 88% ambiental o bradipnea extrema (< 8 rpm)"
+                ],
+                actionsTENS: [
+                    "Posicionar al paciente sentado erguido (Fowler a 90°) para favorecer la expansión torácica.",
+                    "Avisar de inmediato al equipo médico y de enfermería.",
+                    "Medir oximetría de pulso continua y frecuencia respiratoria en un minuto completo.",
+                    "Iniciar oxigenoterapia con dispositivo según protocolo (Cánula nasal 2-3 L/min o Mascarilla de recirculación si es crítica).",
+                    "Tener listo el carro de paro y aspirador de secreciones por sospecha de claudicación respiratoria.",
+                    "Verificar permeabilidad de vía aérea y retirar prótesis dentales móviles si procede."
+                ]
+            },
+            {
+                id: "cefalea_subita",
+                name: "Cefalea Súbita Intensa ('En Trueno')",
+                tags: ["Neurológico", "Prioridad 1", "Cerebro"],
+                possibleCauses: [
+                    "Hemorragia Subaracnoidea (rotura de aneurisma cerebral)",
+                    "Accidente Cerebrovascular (ACV Isquémico o Hemorrágico)",
+                    "Encefalopatía o Crisis Hipertensiva",
+                    "Meningitis o Encefalitis aguda",
+                    "Trombosis de senos venosos cerebrales"
+                ],
+                redFlags: [
+                    "Inicio explosivo (alcanza máxima intensidad en segundos, descrita como 'el peor dolor de la vida')",
+                    "Pérdida de conciencia, confusión súbita o convulsión",
+                    "Déficit neurológico focal (asimetría facial, paresia de extremidad, disartria)",
+                    "Rigidez de nuca y fiebre asociada",
+                    "Midriasis o anisocoria pupilar"
+                ],
+                actionsTENS: [
+                    "Avisar de urgencia para activación de Protocolo Código ACV / Neurocrítico.",
+                    "Aplicar escala rápida FAST / Cincinnati (asimetría facial, caída de brazo, habla anormal).",
+                    "Tomar HGT (Hemoglucotest) INMEDIATAMENTE para descartar hipoglicemia simulación de foco neurológico.",
+                    "Control estricto de PA, FC, SatO2, T° y reflejo pupilar.",
+                    "Mantener cabecera a 30 grados neutra, evitar flexión cervical.",
+                    "Mantener paciente en régimen cero estricto (nada por boca) por riesgo de aspiración o pabellón."
+                ]
+            },
+            {
+                id: "hipotension_shock",
+                name: "Hipotensión Severa / Sospecha de Shock",
+                tags: ["Hemodinámica", "Prioridad 1", "Signos Vitales"],
+                possibleCauses: [
+                    "Shock Hipovolémico (hemorragia digestiva, trauma, deshidratación extrema)",
+                    "Shock Séptico (foco infeccioso urinario, pulmonar o abdominal)",
+                    "Shock Anafiláctico (reacción a fármaco o picadura)",
+                    "Shock Cardiogénico (IAM, arritmia maligna)",
+                    "Efecto adverso o sobredosis de antihipertensivos"
+                ],
+                redFlags: [
+                    "Presión Arterial Sistólica < 90 mmHg o PAM < 65 mmHg",
+                    "Llene capilar enlentecido (> 2-3 segundos), piel pálida, fría o moteada",
+                    "Oliguria o anuria (sin diuresis)",
+                    "Compromiso cuantitativo de conciencia (estupor, letargia)",
+                    "Taquicardia refleja compensatoria (> 110 lpm)"
+                ],
+                actionsTENS: [
+                    "Aviso URGENTE al médico y enfermero; calificar como prioridad inmediata de atención.",
+                    "Posicionar al paciente en Trendelenburg (elevar miembros inferiores a 30-45°) siempre que no presente disnea aguda o TEC.",
+                    "Asegurar abrigo para evitar hipotermia (las mantas térmicas conservan calor).",
+                    "Verificar o instalar de inmediato 2 vías venosas periféricas de grueso calibre (#16 o #18G).",
+                    "Tener disponibles fluidos endovenosos tibios (SF 0.9% o Ringer Lactato) para infusión rápida.",
+                    "Monitoreo continuo de presión arterial cada 5 a 10 minutos."
+                ]
+            },
+            {
+                id: "alteracion_glicemia",
+                name: "Hipoglucemia / Hiperglucemia Extrema",
+                tags: ["Endocrino", "Metabólico", "Diabético"],
+                possibleCauses: [
+                    "Hipoglucemia por sobredosis de insulina o sulfonilureas / ayuno prolongado",
+                    "Cetoacidosis Diabética (CAD)",
+                    "Síndrome Hiperosmolar Hiperglucémico (SHH)",
+                    "Infección intercurrente descompensadora de Diabetes Mellitus"
+                ],
+                redFlags: [
+                    "HGT < 70 mg/dL con sudoración fría, temblor fino, visión borrosa o confusión",
+                    "HGT > 300 mg/dL con respiración de Kussmaul, deshidratación y olor cetósico",
+                    "Pérdida de conciencia en paciente diabético"
+                ],
+                actionsTENS: [
+                    "Si HGT < 70 mg/dL y paciente consciente y colaborador: Administrar 15-20g de carbohidratos simples por vía oral (200 ml de jugo azucarado o agua con 3 cucharaditas de azúcar) y reevaluar a los 15 minutos (Regla de los 15).",
+                    "Si HGT < 70 mg/dL y paciente inconsciente o no deglute: NADA POR BOCA. Aviso urgente para administración médica de Ampollas de Glucosa al 30% o 50% EV.",
+                    "Si Hiperglucemia severa: Monitorear deshidratación, control de diuresis y alistar hidratación parenteral.",
+                    "Registrar de inmediato hora exacta del HGT y resultado en la hoja de enfermería."
+                ]
+            },
+            {
+                id: "fiebre_adulto_mayor",
+                name: "Fiebre / Hipotermia en Adulto Mayor",
+                tags: ["Infeccioso", "Geriatría", "Temperatura"],
+                possibleCauses: [
+                    "Infección del Tracto Urinario (ITU / Pielonefritis)",
+                    "Neumonía adquirida en la comunidad o aspirativa",
+                    "Sepsis bacteriana de cualquier foco",
+                    "Infección de herida o úlcera por presión (UPP)"
+                ],
+                redFlags: [
+                    "Aparición brusca de Síndrome Confusional Agudo (Delirium, agitación o somnolencia)",
+                    "Hipotermia (< 35.5 °C en lugar de fiebre) con sospecha séptica grave",
+                    "Frecuencia respiratoria elevada (> 22 rpm, signo precoz de sepsis)",
+                    "Hipotensión o descompensación hemodinámica"
+                ],
+                actionsTENS: [
+                    "Medir temperatura y cotejar con frecuencia cardíaca y respiratoria.",
+                    "Aplicar medios físicos de enfriamiento gradual (paños tibios, desabrigar parcialmente) si T° > 38.5 °C.",
+                    "Avisar al enfermero(a) para toma de muestras (Urocultivo, Hemocultivos) ANTES de iniciar antibióticos.",
+                    "Asegurar hidratación si el paciente tiene reflejo de deglución conservado.",
+                    "Revisar sonda Folley si tiene instalada (turbidez, hematuria o mal olor)."
+                ]
+            }
+        ];
+
+        // --- 2. DRUGS & ADVERSE REACTIONS (RAM) DATABASE ---
+        const DRUGS_DATA = [
+            {
+                id: "paracetamol",
+                name: "Paracetamol (Acetaminofén)",
+                category: "Analgésico / AINE",
+                presentation: "Comprimidos 500mg, 1g; Frasco ampolla 1g EV; Jarabe",
+                routes: ["Oral", "Intravenosa", "Rectal"],
+                indications: "Dolor leve a moderado, estados febriles.",
+                ramCommon: "Molestias gastrointestinales leves, náuseas.",
+                ramSevere: "Hepatotoxicidad severa por sobredosis (> 4g/día en adultos o > 2g en cirróticos), Síndrome de Stevens-Johnson.",
+                nursingCare: "No superar 4g al día en adultos. Respetar velocidad de infusión EV (pasar en 15 a 20 minutos). Verificar antecedentes de enfermedad hepática."
+            },
+            {
+                id: "ibuprofeno",
+                name: "Ibuprofeno",
+                category: "Analgésico / AINE",
+                presentation: "Comprimidos 200mg, 400mg, 600mg; Suspensión",
+                routes: ["Oral"],
+                indications: "Dolor inflamatorio osteoarticular, dismenorrea, fiebre refractaria.",
+                ramCommon: "Epigastralgia, pirosis, dispepsia, náuseas.",
+                ramSevere: "Hemorragia digestiva alta (HDA), úlcera gástrica, insuficiencia renal aguda por vasoconstricción renal.",
+                nursingCare: "Administrar con alimentos o lácteos. Contraindicado en pacientes con hemorragia activa o falla renal. Precaución en hipertensos."
+            },
+            {
+                id: "ketorolaco",
+                name: "Ketorolaco",
+                category: "Analgésico / AINE",
+                presentation: "Ampolla 30mg/mL; Comprimidos sublinguales 10mg",
+                routes: ["Intramuscular", "Intravenosa", "Sublingual"],
+                indications: "Dolor agudo moderado a severo a corto plazo (postoperatorio o cólico renal).",
+                ramCommon: "Dolor en sitio de punción, mareo, dispepsia.",
+                ramSevere: "Alto riesgo de úlcera péptica y sangrado gástrico, falla renal aguda, anafilaxia.",
+                nursingCare: "Uso máximo recomendado: 3 a 5 días continuos. Diluir la ampolla en 50-100cc de SF para pasar lento por vía EV. Evaluar diuresis."
+            },
+            {
+                id: "tramadol",
+                name: "Tramadol",
+                category: "Analgésico / AINE",
+                presentation: "Gotas 100mg/mL; Ampollas 50mg y 100mg; Comprimidos 50mg",
+                routes: ["Oral", "Subcutánea", "Intravenosa"],
+                indications: "Dolor moderado a severo que no responde a analgésicos comunes.",
+                ramCommon: "Náuseas, vómitos, mareo, somnolencia, boca seca, sudoración profusa.",
+                ramSevere: "Depresión respiratoria, convulsiones (disminuye umbral convulsivo), Síndrome Serotoninérgico.",
+                nursingCare: "Infusión intravenosa SIEMPRE lenta (diluido en 100cc de SF en 30-40 min) para evitar emesis profusa y mareo. Vigilar nivel de sedación."
+            },
+            {
+                id: "enalapril",
+                name: "Enalapril",
+                category: "Cardiovascular",
+                presentation: "Comprimidos 5mg, 10mg, 20mg",
+                routes: ["Oral"],
+                indications: "Hipertensión arterial, Insuficiencia cardíaca, nefropatía diabética.",
+                ramCommon: "Tos seca y persistente (por bradicinina), mareo ortostático, cefalea.",
+                ramSevere: "Angioedema (edema de glotis/lengua), hiperpotasemia, insuficiencia renal aguda.",
+                nursingCare: "Controlar Presión Arterial antes de administrar. Indicar al paciente que se levante despacio de la cama para evitar hipotensión ortostática."
+            },
+            {
+                id: "losartan",
+                name: "Losartán",
+                category: "Cardiovascular",
+                presentation: "Comprimidos 50mg, 100mg",
+                routes: ["Oral"],
+                indications: "Hipertensión arterial, alternativa a Enalapril en casos de tos.",
+                ramCommon: "Mareo, astenia, congestión nasal.",
+                ramSevere: "Hiperpotasemia, hipotensión severa, deterioro renal en estenosis arterial bilateral.",
+                nursingCare: "Monitorear PA y niveles de potasio plasmático. No duplicar dosis en caso de olvido."
+            },
+            {
+                id: "furosemida",
+                name: "Furosemida",
+                category: "Cardiovascular",
+                presentation: "Comprimidos 40mg; Ampolla 20mg/2mL",
+                routes: ["Oral", "Intravenosa", "Intramuscular"],
+                indications: "Edema por insuficiencia cardíaca, cirrosis, insuficiencia renal; sobrecarga de volumen.",
+                ramCommon: "Poliuria abundante, sed, calambres por pérdida electrolítica.",
+                ramSevere: "Hipopotasemia severa (arritmias cardíacas), deshidratación extrema, ototoxicidad si se administra EV rápido.",
+                nursingCare: "Administrar en la mañana para no interrumpir el descanso nocturno. Administrar ampolla EV de forma lenta (1-2 minutos). Medir balance hídrico."
+            },
+            {
+                id: "ciprofloxacino",
+                name: "Ciprofloxacino",
+                category: "Antibiótico",
+                presentation: "Comprimidos 500mg; Matraz infusión 200mg/100mL EV",
+                routes: ["Oral", "Intravenosa"],
+                indications: "Infecciones urinarias complejas, infecciones gastrointestinales bacterianas.",
+                ramCommon: "Diarrea, malestar estomacal, cefalea, erupción cutánea leve.",
+                ramSevere: "Tendinitis y rotura del tendón de Aquiles, prolongación del intervalo QT, colitis por C. difficile.",
+                nursingCare: "Infusión EV en al menos 60 minutos para evitar flebitis. No administrar por vía oral junto a lácteos, hierro o antiácidos."
+            },
+            {
+                id: "metformina",
+                name: "Metformina",
+                category: "Endocrino",
+                presentation: "Comprimidos 500mg, 850mg, 1000mg",
+                routes: ["Oral"],
+                indications: "Diabetes Mellitus tipo 2, resistencia a la insulina.",
+                ramCommon: "Diarrea acuosa, distensión abdominal, flatulencias, sabor metálico.",
+                ramSevere: "Acidosis láctica (grave en hipoxemia o falla renal).",
+                nursingCare: "Tomar siempre junto o después de comidas principales. Suspender 48 horas antes de exámenes con contraste radiológico."
+            },
+            {
+                id: "insulina_nph",
+                name: "Insulina Humana NPH / Cristalina",
+                category: "Endocrino",
+                presentation: "Frascos ampolla o lapiceras 100 UI/mL",
+                routes: ["Subcutánea (NPH/Cristalina)", "Intravenosa (Cristalina)"],
+                indications: "Diabetes Mellitus dependiente de insulina, hiperglucemia severa.",
+                ramCommon: "Lipodistrofia en sitio de punción si no se rota.",
+                ramSevere: "HIPOGLUCEMIA SEVERA (diaforesis, compromiso de conciencia, temblores, coma).",
+                nursingCare: "Rotar sitios de inyección. SIEMPRE verificar el HGT previo y tener la bandeja de comida lista antes de inyectar insulina rápida."
+            },
+            {
+                id: "omeprazol",
+                name: "Omeprazol",
+                category: "Gastrointestinal",
+                presentation: "Cápsulas 20mg; Frasco ampolla 40mg EV",
+                routes: ["Oral", "Intravenosa"],
+                indications: "Protección gástrica, reflujo gastroesofágico, hemorragia digestiva alta.",
+                ramCommon: "Cefalea, diarrea o constipación leve, dolor abdominal.",
+                ramSevere: "Uso crónico: Déficit de Vitamina B12, hipomagnesemia, mayor riesgo de infecciones digestivas.",
+                nursingCare: "Vía oral: Tomar 30-60 min antes del desayuno con estómago vacío. Vía EV: Reconstituir con solvente e infundir en 20-30 min."
+            },
+            {
+                id: "salbutamol",
+                name: "Salbutamol",
+                category: "Respiratorio",
+                presentation: "Inhalador MDI 100 mcg/puff; Gotas nebulización",
+                routes: ["Inhalatoria", "Nebulización"],
+                indications: "Broncoespasmo agudo en Asma y EPOC.",
+                ramCommon: "Temblor fino de manos, taquicardia, palpitaciones.",
+                ramSevere: "Taquicardia severa, arritmias ventriculares en cardiópatas, hipopotasemia con dosis altas repetidas.",
+                nursingCare: "Uso obligatorio de aerocámara en inhalador. Agitar antes de disparar. Esperar 1 minuto entre cada puff."
+            }
+        ];
+
+        // --- 3. DRUG INTERACTIONS DATABASE ---
+        const INTERACTIONS_DATA = [
+            {
+                drugs: ["ibuprofeno", "enalapril"],
+                severity: "ALTA",
+                title: "AINEs + IECAs (Ibuprofeno + Enalapril)",
+                effect: "Antagonismo del efecto antihipertensivo y alto riesgo de Insuficiencia Renal Aguda.",
+                explanation: "Los AINEs reducen las prostaglandinas causando vasoconstricción renal, mientras que los IECAs vasodilatan la arteriola eferente, colapsando el filtrado renal.",
+                tensRecommendation: "Monitorear estrictamente la Presión Arterial y la diuresis. Consultar con el médico para reemplazar el AINE por Paracetamol."
+            },
+            {
+                drugs: ["ibuprofeno", "losartan"],
+                severity: "ALTA",
+                title: "AINEs + ARA II (Ibuprofeno + Losartán)",
+                effect: "Riesgo agudo de nefrotoxicidad, hiperpotasemia y pérdida del control de la presión arterial.",
+                explanation: "Mecanismo idéntico a la combinación con IECAs. Compromete la perfusión intrarrenal.",
+                tensRecommendation: "Vigilar signos vitales y edemas maleolares. Evitar cursos prolongados con AINEs."
+            },
+            {
+                drugs: ["ketorolaco", "ibuprofeno"],
+                severity: "CRÍTICA",
+                title: "Duplicidad de AINEs (Ketorolaco + Ibuprofeno)",
+                effect: "Toxicidad gastrointestinal y renal sinérgica. Contraindicado.",
+                explanation: "No aporta mayor alivio del dolor y multiplica el riesgo de hemorragia digestiva alta, úlceras y falla renal.",
+                tensRecommendation: "¡ALERTA dannytens! Si observa esta combinación, detenga la administración y consulte al médico prescriptor de inmediato."
+            },
+            {
+                drugs: ["tramadol", "ciprofloxacino"],
+                severity: "MODERADA - ALTA",
+                title: "Tramadol + Ciprofloxacino",
+                effect: "Aumento del riesgo de convulsiones y prolongación del intervalo QT.",
+                explanation: "Ambos fármacos disminuyen el umbral convulsivo a nivel del sistema nervioso central.",
+                tensRecommendation: "Vigilar estado neurológico, temblores o antecedentes de epilepsia. Mantener barandas en alto."
+            },
+            {
+                drugs: ["ciprofloxacino", "omeprazol"],
+                severity: "MODERADA",
+                title: "Ciprofloxacino + Omeprazol (o Antiácidos)",
+                effect: "Disminución notable de la absorción y eficacia del antibiótico.",
+                explanation: "La elevación del pH y la quelación interfieren con la biodisponibilidad del ciprofloxacino.",
+                tensRecommendation: "Separar la administración oral de ambos medicamentos al menos 2 horas."
+            },
+            {
+                drugs: ["furosemida", "enalapril"],
+                severity: "MODERADA",
+                title: "Furosemida + Enalapril",
+                effect: "Riesgo de hipotensión severa de primera dosis y deshidratación.",
+                explanation: "La sinergia diurética sumada a la vasodilatación puede desplomar la presión arterial.",
+                tensRecommendation: "Monitorear PA antes y 1 hora después. Educar al paciente a incorporarse con lentitud."
+            },
+            {
+                drugs: ["furosemida", "ibuprofeno"],
+                severity: "ALTA",
+                title: "Furosemida + AINEs (Ibuprofeno / Ketorolaco)",
+                effect: "Pérdida del efecto diurético y retención hídrica con toxicidad renal.",
+                explanation: "Los AINEs inducen vasoconstricción y retención de sodio, bloqueando la acción de la furosemida.",
+                tensRecommendation: "Controlar balance hídrico y vigilar edemas periféricos."
+            },
+            {
+                drugs: ["insulina_nph", "salbutamol"],
+                severity: "MODERADA",
+                title: "Insulina + Salbutamol (Beta-2 Agonistas)",
+                effect: "Antagonismo metabólico e hipopotasemia acentuada.",
+                explanation: "El Salbutamol estimula la glucogenólisis aumentando la glicemia y además introduce potasio al espacio intracelular.",
+                tensRecommendation: "Intensificar el monitoreo del HGT cuando un paciente diabético reciba micronebulizaciones con salbutamol."
+            }
+        ];
+
+        // --- 4. PATIENT RECORDS IN LOCAL STORAGE ---
+        const STORAGE_KEY = "TENS_ASSIST_DANNYTENS_V2";
+        let patients = [];
+
+        function loadPatientsFromStorage() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    patients = JSON.parse(stored);
+                } else {
+                    // Seed initial sample patient personalized for dannytens
+                    patients = [
+                        {
+                            id: "seed-danny-1",
+                            name: "Rosa Elvira Morales Tapia",
+                            rut: "9.845.213-K",
+                            age: 72,
+                            sex: "Femenino",
+                            bed: "Cama 4 - Medicina",
+                            allergies: "Alergia confirmada a Penicilina (rash cutáneo)",
+                            history: "HTA, Diabetes Mellitus 2, Artrosis de rodilla",
+                            contactName: "Carmen Morales (Hija)",
+                            contactPhone: "56987654321",
+                            vitals: {
+                                pa: "128/78",
+                                fc: "76",
+                                fr: "17",
+                                sat: "97",
+                                temp: "36.6",
+                                hgt: "118"
+                            },
+                            meds: "Losartán 50mg c/12h VO, Metformina 850mg c/12h VO, Paracetamol 1g SOS",
+                            notes: "Paciente tranquila y de muy buen humor. Refiere sentirse muy cómoda y descansada. Cuidados y confort brindados con cariño por dannytens.",
+                            waSchedule: {
+                                frequency: "3days",
+                                mode: "review",
+                                lastSent: null,
+                                nextDue: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString()
+                            },
+                            waHistory: [],
+                            createdAt: new Date().toLocaleDateString('es-CL', { hour: '2-digit', minute: '2-digit' })
+                        }
+                    ];
+                    savePatientsToStorage();
+                }
+            } catch (e) {
+                console.error("Error loading local storage", e);
+                patients = [];
+            }
+        }
+
+        function savePatientsToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+            } catch (e) {
+                showToast("Error al guardar en almacenamiento local", true);
+            }
+        }
+
+        // --- 5. TAB NAVIGATION SYSTEM ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.remove('bg-pink-50', 'text-pink-700', 'shadow-sm', 'border', 'border-pink-200/60');
+                btn.classList.add('text-slate-600');
+            });
+
+            const currentTab = document.getElementById(`tab-${tabId}`);
+            const currentNav = document.getElementById(`nav-${tabId}`);
+
+            if (currentTab) currentTab.classList.remove('hidden');
+            if (currentNav) {
+                currentNav.classList.remove('text-slate-600');
+                currentNav.classList.add('bg-pink-50', 'text-pink-700', 'shadow-sm', 'border', 'border-pink-200/60');
+            }
+
+            closeMobileSidebar();
+        }
+
+        // Mobile drawer handlers
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        function openMobileSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            mobileOverlay.classList.remove('hidden');
+        }
+
+        function closeMobileSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            mobileOverlay.classList.add('hidden');
+        }
+
+        document.getElementById('mobileMenuBtn').addEventListener('click', openMobileSidebar);
+        document.getElementById('closeSidebarBtn').addEventListener('click', closeMobileSidebar);
+        mobileOverlay.addEventListener('click', closeMobileSidebar);
+
+        // --- 6. TOAST NOTIFICATIONS WITH DANNYTENS SEAL ---
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toastNotification');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.innerText = `${message} · dannytens`;
+            if (isError) {
+                toastIcon.setAttribute('data-lucide', 'alert-circle');
+                toastIcon.className = "w-4 h-4 text-white fill-rose-600";
+            } else {
+                toastIcon.setAttribute('data-lucide', 'heart');
+                toastIcon.className = "w-4 h-4 text-white fill-pink-200";
+            }
+            lucide.createIcons();
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3200);
+        }
+
+        // --- 7. SYMPTOM EVALUATOR LOGIC ---
+        function renderSymptomTags() {
+            const container = document.getElementById('quickSymptomTags');
+            container.innerHTML = SYMPTOMS_DATA.map(s => `
+                <button onclick="selectSymptom('${s.id}')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-700 hover:bg-pink-100 hover:text-pink-800 transition-colors border border-pink-200 shadow-xs">
+                    ${s.name.split('(')[0]}
+                </button>
+            `).join('');
+        }
+
+        function selectSymptom(id) {
+            const symptom = SYMPTOMS_DATA.find(s => s.id === id);
+            if (!symptom) return;
+
+            document.getElementById('symptomEmptyState').classList.add('hidden');
+            const detailView = document.getElementById('symptomDetailView');
+            detailView.classList.remove('hidden');
+
+            detailView.innerHTML = `
+                <div class="bg-white rounded-3xl shadow-sm border border-pink-100 overflow-hidden transition-all">
+                    <!-- Title Bar Pastel Rose -->
+                    <div class="bg-gradient-to-r from-pink-400 via-rose-400 to-fuchsia-400 text-white p-5 md:p-6">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                ${symptom.tags.map(tag => `<span class="bg-white/20 backdrop-blur-xs text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">${tag}</span>`).join('')}
+                            </div>
+                            <span class="text-[10px] bg-white/25 text-white px-2 py-0.5 rounded-full font-bold">Protocolo dannytens</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold">${symptom.name}</h3>
+                        <p class="text-pink-100 text-xs mt-1">Guía orientativa de triage y cuidados para el rol de TENS</p>
+                    </div>
+
+                    <div class="p-5 md:p-6 space-y-6">
+                        <!-- Red Flags / Banderas Rojas -->
+                        <div class="bg-rose-50 border-l-4 border-rose-400 p-4 rounded-r-2xl">
+                            <h4 class="font-bold text-rose-800 text-xs md:text-sm flex items-center space-x-2">
+                                <i data-lucide="alert-octagon" class="w-4 h-4 text-rose-500"></i>
+                                <span>Signos de Alarma / Red Flags (Aviso Inmediato)</span>
+                            </h4>
+                            <p class="text-[11px] text-rose-700 mt-1 mb-2 font-semibold">Si el paciente presenta cualquiera de estos signos, notificar a Enfermero(a) o Médico(a):</p>
+                            <ul class="space-y-1.5 text-xs text-rose-900">
+                                ${symptom.redFlags.map(rf => `
+                                    <li class="flex items-start space-x-2">
+                                        <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5"></i>
+                                        <span><strong>${rf}</strong></span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <!-- Protocolo de Actuación TENS -->
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-xs md:text-sm flex items-center space-x-2 mb-3">
+                                <div class="bg-pink-100 text-pink-700 p-1 rounded-lg">
+                                    <i data-lucide="check-square" class="w-4 h-4"></i>
+                                </div>
+                                <span>Protocolo de Actuación & Cuidados dannytens</span>
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                ${symptom.actionsTENS.map((act, idx) => `
+                                    <div class="p-3.5 bg-pink-50/40 border border-pink-100 rounded-2xl text-xs flex items-start space-x-2.5 hover:bg-pink-50/70 transition-colors">
+                                        <span class="bg-gradient-to-tr from-pink-500 to-rose-400 text-white font-bold w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[10px] mt-0.5 shadow-xs">${idx + 1}</span>
+                                        <span class="text-slate-700 leading-relaxed">${act}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Posibles Causas Orientativas -->
+                        <div class="pt-4 border-t border-pink-100">
+                            <h4 class="font-bold text-pink-700 text-xs uppercase tracking-wider mb-2">Posibles Causas Orientativas:</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${symptom.possibleCauses.map(cause => `
+                                    <span class="bg-pink-50 text-pink-800 border border-pink-200 px-3 py-1 rounded-xl text-xs font-semibold">
+                                        ${cause}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Live search filter in symptoms
+        document.getElementById('symptomSearch').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            if (!query) return;
+            const match = SYMPTOMS_DATA.find(s => 
+                s.name.toLowerCase().includes(query) || 
+                s.tags.some(t => t.toLowerCase().includes(query)) ||
+                s.possibleCauses.some(c => c.toLowerCase().includes(query))
+            );
+            if (match) {
+                selectSymptom(match.id);
+            }
+        });
+
+        // --- 8. PATIENT RECORDS (FICHAS CLÍNICAS) LOGIC ---
+        function renderPatientsList() {
+            const container = document.getElementById('patientListContainer');
+            const search = document.getElementById('patientSearchInput').value.toLowerCase().trim();
+            const countBadge = document.getElementById('patientCountBadge');
+
+            const filtered = patients.filter(p => 
+                p.name.toLowerCase().includes(search) || 
+                p.rut.toLowerCase().includes(search) || 
+                (p.allergies && p.allergies.toLowerCase().includes(search))
+            );
+
+            countBadge.innerText = `${filtered.length} Ficha${filtered.length === 1 ? '' : 's'}`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center bg-white/80 rounded-3xl border border-dashed border-pink-200">
+                        <i data-lucide="clipboard-x" class="w-10 h-10 text-pink-300 mx-auto mb-2"></i>
+                        <p class="text-slate-600 font-bold text-sm">No se encontraron fichas clínicas</p>
+                        <p class="text-pink-400 text-xs mt-1">dannytens, presiona 'Nueva Ficha Clínica' para ingresar a un paciente.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = filtered.map(p => {
+                const hasAlergy = p.allergies && p.allergies.toLowerCase() !== "sin alergias" && p.allergies.toLowerCase() !== "ninguna" && p.allergies.toLowerCase() !== "no refiere";
+                return `
+                <div class="bg-white/95 rounded-3xl p-5 border border-pink-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <!-- Header Card -->
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-[10px] font-bold text-pink-700 bg-pink-100/70 px-2.5 py-0.5 rounded-full border border-pink-200">${p.bed || 'Ambulatorio'}</span>
+                                <h3 class="font-bold text-slate-900 text-base mt-1.5 leading-snug">${p.name}</h3>
+                                <p class="text-xs text-slate-500">RUT: <span class="font-semibold text-slate-700">${p.rut}</span> • ${p.age ? p.age + ' años' : 'Edad n/e'}</p>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <button onclick="quickGoToWhatsApp('${p.id}')" title="Enviar informe por WhatsApp" class="p-2 text-pink-500 hover:bg-pink-50 rounded-xl transition-colors">
+                                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="viewPatientDetail('${p.id}')" title="Ver detalle" class="p-2 text-slate-400 hover:text-pink-600 hover:bg-pink-50 rounded-xl transition-colors">
+                                    <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Alergias Badge (Critical) -->
+                        <div class="mt-3">
+                            ${hasAlergy ? `
+                                <div class="bg-rose-50 border border-rose-200 text-rose-800 text-[11px] px-2.5 py-1 rounded-xl flex items-center space-x-1.5 font-bold">
+                                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-500 shrink-0"></i>
+                                    <span class="truncate">Alergia: ${p.allergies}</span>
+                                </div>
+                            ` : `
+                                <div class="text-[11px] text-slate-400 flex items-center space-x-1">
+                                    <i data-lucide="shield-check" class="w-3.5 h-3.5 text-pink-400"></i>
+                                    <span>Sin alergias reportadas</span>
+                                </div>
+                            `}
+                        </div>
+
+                        <!-- Contacto Familiar si existe -->
+                        ${p.contactPhone ? `
+                            <div class="mt-2 text-[11px] text-pink-700 bg-pink-50/60 px-2.5 py-1 rounded-xl border border-pink-100 flex items-center justify-between">
+                                <span class="truncate">Familiar: ${p.contactName || 'Apoderado'}</span>
+                                <span class="font-mono text-[10px] text-pink-800 font-bold">${p.contactPhone}</span>
+                            </div>
+                        ` : ''}
+
+                        <!-- Vital Signs Micro-Grid -->
+                        <div class="mt-3 grid grid-cols-3 gap-1.5 bg-pink-50/30 p-2.5 rounded-2xl text-center border border-pink-100">
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-semibold">PA</span>
+                                <span class="text-xs font-bold text-slate-800">${p.vitals?.pa || '--'}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-semibold">FC</span>
+                                <span class="text-xs font-bold text-slate-800">${p.vitals?.fc ? p.vitals.fc + ' lpm' : '--'}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-slate-500 font-semibold">SatO2</span>
+                                <span class="text-xs font-bold ${Number(p.vitals?.sat) < 92 ? 'text-rose-600' : 'text-slate-800'}">${p.vitals?.sat ? p.vitals.sat + '%' : '--'}</span>
+                            </div>
+                        </div>
+
+                        <!-- Notes Preview -->
+                        <p class="mt-3 text-xs text-slate-600 line-clamp-2 italic">
+                            "${p.notes || 'Sin notas de evolución registradas.'}"
+                        </p>
+                    </div>
+
+                    <!-- Actions Bottom Bar with dannytens stamp -->
+                    <div class="mt-4 pt-3 border-t border-pink-100 flex items-center justify-between text-xs">
+                        <span class="text-[10px] text-pink-400 font-bold flex items-center gap-1">
+                            <i data-lucide="heart" class="w-3 h-3 fill-pink-300"></i> dannytens
+                        </span>
+                        <div class="flex items-center space-x-1">
+                            <button onclick="editPatient('${p.id}')" class="p-1.5 text-slate-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors" title="Editar">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </button>
+                            <button onclick="deletePatient('${p.id}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" title="Eliminar">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function openPatientModal(isEdit = false) {
+            document.getElementById('patientModal').classList.remove('hidden');
+            if (!isEdit) {
+                document.getElementById('modalPatientTitle').innerText = "Nueva Ficha de Paciente";
+                document.getElementById('patientForm').reset();
+                document.getElementById('patientRecordId').value = "";
+            }
+        }
+
+        function closePatientModal() {
+            document.getElementById('patientModal').classList.add('hidden');
+        }
+
+        function savePatientRecord(e) {
+            e.preventDefault();
+            const id = document.getElementById('patientRecordId').value || 'rec-' + Date.now();
+            const name = document.getElementById('pName').value.trim();
+            const rut = document.getElementById('pRUT').value.trim();
+            const age = document.getElementById('pAge').value.trim();
+            const sex = document.getElementById('pSex').value;
+            const bed = document.getElementById('pBed').value.trim();
+            const allergies = document.getElementById('pAllergies').value.trim();
+            const history = document.getElementById('pHistory').value.trim();
+            const contactName = document.getElementById('pContactName').value.trim();
+            const contactPhone = document.getElementById('pContactPhone').value.trim().replace(/\s+/g, '').replace('+', '');
+            const pa = document.getElementById('pPA').value.trim();
+            const fc = document.getElementById('pFC').value.trim();
+            const fr = document.getElementById('pFR').value.trim();
+            const sat = document.getElementById('pSat').value.trim();
+            const temp = document.getElementById('pTemp').value.trim();
+            const hgt = document.getElementById('pHGT').value.trim();
+            const meds = document.getElementById('pMeds').value.trim();
+            const notes = document.getElementById('pNotes').value.trim();
+
+            const existingIndex = patients.findIndex(p => p.id === id);
+
+            const record = {
+                id,
+                author: APP_AUTHOR,
+                name,
+                rut,
+                age,
+                sex,
+                bed,
+                allergies,
+                history,
+                contactName,
+                contactPhone,
+                vitals: { pa, fc, fr, sat, temp, hgt },
+                meds,
+                notes,
+                waSchedule: existingIndex >= 0 && patients[existingIndex].waSchedule ? patients[existingIndex].waSchedule : {
+                    frequency: "3days",
+                    mode: "review",
+                    lastSent: null,
+                    nextDue: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString()
+                },
+                waHistory: existingIndex >= 0 && patients[existingIndex].waHistory ? patients[existingIndex].waHistory : [],
+                createdAt: existingIndex >= 0 ? patients[existingIndex].createdAt : new Date().toLocaleDateString('es-CL', { hour: '2-digit', minute: '2-digit' })
+            };
+
+            if (existingIndex >= 0) {
+                patients[existingIndex] = record;
+                showToast("Ficha clínica actualizada");
+            } else {
+                patients.unshift(record);
+                showToast("Ficha clínica guardada");
+            }
+
+            savePatientsToStorage();
+            closePatientModal();
+            renderPatientsList();
+            populateWAPatientDropdown();
+        }
+
+        function editPatient(id) {
+            const p = patients.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById('modalPatientTitle').innerText = "Editar Ficha de Paciente";
+            document.getElementById('patientRecordId').value = p.id;
+            document.getElementById('pName').value = p.name || '';
+            document.getElementById('pRUT').value = p.rut || '';
+            document.getElementById('pAge').value = p.age || '';
+            document.getElementById('pSex').value = p.sex || 'Femenino';
+            document.getElementById('pBed').value = p.bed || '';
+            document.getElementById('pAllergies').value = p.allergies || '';
+            document.getElementById('pHistory').value = p.history || '';
+            document.getElementById('pContactName').value = p.contactName || '';
+            document.getElementById('pContactPhone').value = p.contactPhone || '';
+            document.getElementById('pPA').value = p.vitals?.pa || '';
+            document.getElementById('pFC').value = p.vitals?.fc || '';
+            document.getElementById('pFR').value = p.vitals?.fr || '';
+            document.getElementById('pSat').value = p.vitals?.sat || '';
+            document.getElementById('pTemp').value = p.vitals?.temp || '';
+            document.getElementById('pHGT').value = p.vitals?.hgt || '';
+            document.getElementById('pMeds').value = p.meds || '';
+            document.getElementById('pNotes').value = p.notes || '';
+
+            openPatientModal(true);
+        }
+
+        function deletePatient(id) {
+            const p = patients.find(item => item.id === id);
+            if (!p) return;
+            patients = patients.filter(item => item.id !== id);
+            savePatientsToStorage();
+            renderPatientsList();
+            populateWAPatientDropdown();
+            showToast(`Ficha de ${p.name.split(' ')[0]} eliminada`);
+        }
+
+        function viewPatientDetail(id) {
+            const p = patients.find(item => item.id === id);
+            if (!p) return;
+
+            const modal = document.getElementById('viewPatientModal');
+            const container = document.getElementById('viewPatientContent');
+
+            container.innerHTML = `
+                <div class="border-b border-pink-100 pb-4">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-xs bg-pink-100 text-pink-800 font-bold px-2.5 py-0.5 rounded-full border border-pink-200">${p.bed || 'Atención General'}</span>
+                        <span class="text-xs text-pink-600 font-bold flex items-center gap-1">
+                            <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Ficha registrada por dannytens
+                        </span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900">${p.name}</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">RUT: <strong>${p.rut}</strong> • Edad: <strong>${p.age || 'No consignada'}</strong> • Sexo: <strong>${p.sex}</strong> • Ingreso: ${p.createdAt}</p>
+                </div>
+
+                <!-- Alergias y Advertencias -->
+                <div class="p-3.5 rounded-2xl ${p.allergies ? 'bg-rose-50 border border-rose-200 text-rose-900' : 'bg-pink-50/50 border border-pink-100 text-slate-700'} text-xs">
+                    <strong class="font-bold flex items-center space-x-1.5">
+                        <i data-lucide="alert-circle" class="w-4 h-4 text-rose-500"></i>
+                        <span>Alergias Conocidas:</span>
+                    </strong>
+                    <p class="mt-1 font-bold text-sm">${p.allergies || 'Sin antecedentes alérgicos descritos.'}</p>
+                </div>
+
+                <!-- Antecedentes Mórbidos -->
+                <div>
+                    <h4 class="text-xs font-bold text-pink-700 uppercase tracking-wider">Antecedentes Mórbidos:</h4>
+                    <p class="text-xs md:text-sm text-slate-800 font-medium">${p.history || 'Ninguno consignado'}</p>
+                </div>
+
+                <!-- Tabla de Signos Vitales -->
+                <div>
+                    <h4 class="text-xs font-bold text-pink-700 uppercase tracking-wider mb-2">Control de Signos Vitales (CSV):</h4>
+                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center">
+                        <div class="bg-pink-50/40 p-2.5 rounded-2xl border border-pink-100">
+                            <span class="text-[10px] text-slate-500 block font-semibold">P. Arterial</span>
+                            <span class="text-xs md:text-sm font-bold text-slate-800">${p.vitals?.pa || '--'}</span>
+                        </div>
+                        <div class="bg-pink-50/40 p-2.5 rounded-2xl border border-pink-100">
+                            <span class="text-[10px] text-slate-500 block font-semibold">F. Cardíaca</span>
+                            <span class="text-xs md:text-sm font-bold text-slate-800">${p.vitals?.fc ? p.vitals.fc + ' lpm' : '--'}</span>
+                        </div>
+                        <div class="bg-pink-50/40 p-2.5 rounded-2xl border border-pink-100">
+                            <span class="text-[10px] text-slate-500 block font-semibold">F. Respiratoria</span>
+                            <span class="text-xs md:text-sm font-bold text-slate-800">${p.vitals?.fr ? p.vitals.fr + ' rpm' : '--'}</span>
+                        </div>
+                        <div class="bg-pink-50/40 p-2.5 rounded-2xl border border-pink-100">
+                            <span class="text-[10px] text-slate-500 block font-semibold">SatO2</span>
+                            <span class="text-xs md:text-sm font-bold text-slate-800">${p.vitals?.sat ? p.vitals.sat + '%' : '--'}</span>
+                        </div>
+                        <div class="bg-pink-50/40 p-2.5 rounded-2xl border border-pink-100">
+                            <span class="text-[10px] text-slate-500 block font-semibold">Temperatura</span>
+                            <span class="text-xs md:text-sm font-bold text-slate-800">${p.vitals?.temp ? p.vitals.temp + ' °C' : '--'}</span>
+                        </div>
+                        <div class="bg-pink-50/40 p-2.5 rounded-2xl border border-pink-100">
+                            <span class="text-[10px] text-slate-500 block font-semibold">HGT</span>
+                            <span class="text-xs md:text-sm font-bold text-slate-800">${p.vitals?.hgt ? p.vitals.hgt + ' mg/dL' : '--'}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medicamentos -->
+                <div>
+                    <h4 class="text-xs font-bold text-pink-700 uppercase tracking-wider">Tratamiento Farmacológico:</h4>
+                    <p class="text-xs md:text-sm text-slate-800 bg-pink-50/40 p-3 rounded-2xl border border-pink-100 font-medium">${p.meds || 'Sin fármacos especificados'}</p>
+                </div>
+
+                <!-- Evolución -->
+                <div>
+                    <h4 class="text-xs font-bold text-pink-700 uppercase tracking-wider">Nota de Evolución y Cuidados TENS:</h4>
+                    <div class="p-3 bg-pink-50/30 rounded-2xl border border-pink-100 text-xs md:text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">${p.notes || 'Sin notas.'}</div>
+                </div>
+
+                <!-- Sello Oficial de dannytens en la Ficha -->
+                <div class="pt-3 border-t border-pink-100 flex items-center justify-between text-[11px] text-pink-600 font-bold">
+                    <span>Ficha clínica avalada por dannytens</span>
+                    <span>TENS Assist Pro</span>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeViewPatientModal() {
+            document.getElementById('viewPatientModal').classList.add('hidden');
+        }
+
+        // --- 9. DRUG DIRECTORY & RAM LOGIC ---
+        function renderDrugList(drugs) {
+            const container = document.getElementById('drugListContainer');
+            if (drugs.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center bg-white/80 rounded-3xl border border-dashed border-pink-200">
+                        <i data-lucide="search-x" class="w-10 h-10 text-pink-300 mx-auto mb-2"></i>
+                        <p class="text-slate-600 font-bold text-sm">No se encontraron medicamentos</p>
+                        <p class="text-pink-400 text-xs mt-1">dannytens, prueba modificando el término o la categoría.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = drugs.map(drug => `
+                <div class="bg-white/95 rounded-3xl p-5 border border-pink-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <!-- Header & Badges -->
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-[10px] font-bold text-fuchsia-700 bg-fuchsia-50 px-2.5 py-0.5 rounded-full border border-fuchsia-100">${drug.category}</span>
+                                <h3 class="font-bold text-slate-900 text-base md:text-lg mt-1">${drug.name}</h3>
+                                <p class="text-xs text-slate-500">${drug.presentation}</p>
+                            </div>
+                            <div class="flex flex-wrap gap-1">
+                                ${drug.routes.map(r => `<span class="text-[10px] bg-pink-50 text-pink-700 px-2 py-0.5 rounded-lg font-bold border border-pink-100">${r}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Indicación -->
+                        <div class="mt-3 text-xs text-slate-700">
+                            <span class="font-bold text-slate-900">Indicación:</span> ${drug.indications}
+                        </div>
+
+                        <!-- RAM Frecuente -->
+                        <div class="mt-3 p-2.5 bg-amber-50/70 rounded-2xl border border-amber-200/60 text-xs">
+                            <span class="font-bold text-amber-900 flex items-center space-x-1">
+                                <i data-lucide="info" class="w-3.5 h-3.5 text-amber-600"></i>
+                                <span>RAM Frecuentes / Comunes:</span>
+                            </span>
+                            <p class="text-amber-800 mt-0.5">${drug.ramCommon}</p>
+                        </div>
+
+                        <!-- RAM Grave -->
+                        <div class="mt-2 p-2.5 bg-rose-50/70 rounded-2xl border border-rose-200/60 text-xs">
+                            <span class="font-bold text-rose-900 flex items-center space-x-1">
+                                <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-rose-500"></i>
+                                <span>RAM Graves / Toxicidad:</span>
+                            </span>
+                            <p class="text-rose-800 mt-0.5 font-semibold">${drug.ramSevere}</p>
+                        </div>
+
+                        <!-- Cuidados de Enfermería TENS -->
+                        <div class="mt-3 pt-3 border-t border-pink-100 text-xs text-slate-600">
+                            <strong class="text-pink-700 flex items-center space-x-1 mb-1">
+                                <i data-lucide="heart-handshake" class="w-3.5 h-3.5 text-pink-500"></i>
+                                <span>Cuidados indispensables de dannytens:</span>
+                            </strong>
+                            <p class="leading-relaxed bg-pink-50/30 p-2.5 rounded-xl border border-pink-100">${drug.nursingCare}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function filterDrugs() {
+            const query = document.getElementById('drugSearchInput').value.toLowerCase().trim();
+            const category = document.getElementById('drugCategorySelect').value;
+
+            const filtered = DRUGS_DATA.filter(drug => {
+                const matchesQuery = drug.name.toLowerCase().includes(query) || 
+                                     drug.indications.toLowerCase().includes(query) || 
+                                     drug.ramSevere.toLowerCase().includes(query);
+                const matchesCat = category === "ALL" || drug.category.toLowerCase().includes(category.toLowerCase());
+                return matchesQuery && matchesCat;
+            });
+
+            renderDrugList(filtered);
+        }
+
+        // --- 10. DRUG-DRUG INTERACTIONS CHECKER ---
+        let selectedDrugsForInteraction = [];
+
+        function renderInteractionCheckboxes() {
+            const container = document.getElementById('interactionCheckboxes');
+            const query = document.getElementById('interactionFilterInput').value.toLowerCase().trim();
+
+            const filtered = DRUGS_DATA.filter(d => d.name.toLowerCase().includes(query));
+
+            container.innerHTML = filtered.map(d => {
+                const isChecked = selectedDrugsForInteraction.includes(d.id);
+                return `
+                    <label class="flex items-center space-x-2.5 py-2 px-2 hover:bg-pink-50/60 rounded-xl cursor-pointer transition-colors">
+                        <input type="checkbox" value="${d.id}" ${isChecked ? 'checked' : ''} onchange="toggleDrugInteraction('${d.id}')" class="rounded text-pink-500 focus:ring-pink-300 h-4 w-4 border-pink-300">
+                        <div class="flex-1">
+                            <span class="font-bold text-slate-800 text-xs block">${d.name.split('(')[0]}</span>
+                            <span class="text-[10px] text-pink-400 block">${d.category}</span>
+                        </div>
+                    </label>
+                `;
+            }).join('');
+        }
+
+        function filterInteractionList() {
+            renderInteractionCheckboxes();
+        }
+
+        function toggleDrugInteraction(drugId) {
+            if (selectedDrugsForInteraction.includes(drugId)) {
+                selectedDrugsForInteraction = selectedDrugsForInteraction.filter(id => id !== drugId);
+            } else {
+                selectedDrugsForInteraction.push(drugId);
+            }
+            updateInteractionUI();
+        }
+
+        function clearSelectedInteractions() {
+            selectedDrugsForInteraction = [];
+            updateInteractionUI();
+            renderInteractionCheckboxes();
+        }
+
+        function updateInteractionUI() {
+            document.getElementById('selectedCountBadge').innerText = `${selectedDrugsForInteraction.length} seleccionados`;
+
+            const placeholder = document.getElementById('interactionResultsPlaceholder');
+            const content = document.getElementById('interactionResultsContent');
+
+            if (selectedDrugsForInteraction.length < 2) {
+                placeholder.classList.remove('hidden');
+                content.classList.add('hidden');
+                return;
+            }
+
+            placeholder.classList.add('hidden');
+            content.classList.remove('hidden');
+
+            const detectedInteractions = [];
+
+            for (let i = 0; i < selectedDrugsForInteraction.length; i++) {
+                for (let j = i + 1; j < selectedDrugsForInteraction.length; j++) {
+                    const drugA = selectedDrugsForInteraction[i];
+                    const drugB = selectedDrugsForInteraction[j];
+
+                    const found = INTERACTIONS_DATA.find(inter => 
+                        (inter.drugs.includes(drugA) && inter.drugs.includes(drugB))
+                    );
+
+                    if (found && !detectedInteractions.includes(found)) {
+                        detectedInteractions.push(found);
+                    }
+                }
+            }
+
+            if (detectedInteractions.length === 0) {
+                content.innerHTML = `
+                    <div class="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-3xl p-6 text-pink-900">
+                        <div class="flex items-center space-x-2 text-pink-700 font-bold text-base mb-2">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-pink-500"></i>
+                            <span>No se detectaron interacciones severas directas</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-600">
+                            Entre los fármacos seleccionados no constan contraindicaciones mayores registradas en la base de dannytens. Recuerda respetar siempre los 5 correctos de enfermería y vigilar la tolerancia individual.
+                        </p>
+                    </div>
+                `;
+            } else {
+                content.innerHTML = `
+                    <div class="mb-4 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 flex items-center justify-between">
+                        <div class="flex items-center space-x-2.5">
+                            <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-500"></i>
+                            <span class="font-bold text-xs md:text-sm">Se identificaron ${detectedInteractions.length} interacción(es) de riesgo:</span>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase bg-rose-200 text-rose-800 px-2.5 py-0.5 rounded-full">Alerta de Seguridad</span>
+                    </div>
+
+                    ${detectedInteractions.map(inter => `
+                        <div class="bg-white rounded-3xl p-5 border-l-4 ${inter.severity === 'CRÍTICA' ? 'border-l-rose-500' : 'border-l-pink-400'} border border-pink-100 shadow-sm space-y-3">
+                            <div class="flex items-start justify-between">
+                                <h4 class="font-bold text-slate-900 text-base">${inter.title}</h4>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${inter.severity === 'CRÍTICA' ? 'bg-rose-100 text-rose-800' : 'bg-pink-100 text-pink-800'}">
+                                    Severidad: ${inter.severity}
+                                </span>
+                            </div>
+                            
+                            <p class="text-xs text-rose-600 font-bold">${inter.effect}</p>
+                            
+                            <div class="text-xs text-slate-600 bg-pink-50/30 p-3 rounded-2xl border border-pink-100 leading-relaxed">
+                                <strong>Mecanismo farmacológico:</strong> ${inter.explanation}
+                            </div>
+
+                            <div class="text-xs bg-rose-50/50 text-rose-900 p-3 rounded-2xl border border-rose-100">
+                                <strong class="flex items-center space-x-1.5 text-rose-700 mb-1">
+                                    <i data-lucide="stethoscope" class="w-3.5 h-3.5"></i>
+                                    <span>Conducta recomendada por dannytens:</span>
+                                </strong>
+                                <p>${inter.tensRecommendation}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                `;
+            }
+            lucide.createIcons();
+        }
+
+        // ========================================================
+        // --- 11. MÓDULO INFORMES FAMILIARES POR WHATSAPP & IA ---
+        // ========================================================
+        function populateWAPatientDropdown() {
+            const select = document.getElementById('waPatientSelect');
+            if (!select) return;
+
+            if (patients.length === 0) {
+                select.innerHTML = '<option value="">No hay pacientes registrados</option>';
+                return;
+            }
+
+            select.innerHTML = patients.map(p => `
+                <option value="${p.id}">${p.name} - ${p.bed || 'Box/Cama'}</option>
+            `).join('');
+
+            onSelectPatientForWA();
+        }
+
+        function quickGoToWhatsApp(patientId) {
+            switchTab('whatsapp');
+            const select = document.getElementById('waPatientSelect');
+            if (select) {
+                select.value = patientId;
+                onSelectPatientForWA();
+                generateAIReport();
+            }
+        }
+
+        function onSelectPatientForWA() {
+            const patientId = document.getElementById('waPatientSelect').value;
+            const patient = patients.find(p => p.id === patientId);
+
+            if (!patient) {
+                document.getElementById('waPatientSummaryContent').innerText = "Seleccione un paciente válido.";
+                return;
+            }
+
+            // Populate contact fields
+            document.getElementById('waContactName').value = patient.contactName || '';
+            document.getElementById('waContactPhone').value = patient.contactPhone || '';
+
+            // Load scheduling
+            const schedule = patient.waSchedule || { frequency: '3days', mode: 'review', nextDue: null };
+            const radiosFreq = document.getElementsByName('waFrequency');
+            radiosFreq.forEach(r => { r.checked = (r.value === (schedule.frequency || '3days')); });
+
+            const radiosMode = document.getElementsByName('waDispatchMode');
+            radiosMode.forEach(r => { r.checked = (r.value === (schedule.mode || 'review')); });
+
+            // Next Due display
+            const nextDueEl = document.getElementById('waNextScheduledDate');
+            if (schedule.nextDue) {
+                const dateObj = new Date(schedule.nextDue);
+                nextDueEl.innerText = dateObj.toLocaleDateString('es-CL', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+            } else {
+                nextDueEl.innerText = "Calculado al guardar pauta";
+            }
+
+            // Summary Card
+            const vitals = patient.vitals || {};
+            document.getElementById('waPatientSummaryContent').innerHTML = `
+                <p><strong>Ubicación:</strong> ${patient.bed || 'No consignada'}</p>
+                <p><strong>Signos Vitales:</strong> PA ${vitals.pa || '--'} | FC ${vitals.fc || '--'} lpm | SatO2 ${vitals.sat || '--'}% | T° ${vitals.temp || '--'}°C</p>
+                <p><strong>Fármacos activos:</strong> ${patient.meds || 'Sin fármacos'}</p>
+                <p class="truncate"><strong>Evolución clínica:</strong> ${patient.notes || 'Estable'}</p>
+            `;
+
+            renderWAHistory(patient);
+        }
+
+        function saveScheduleSettings() {
+            const patientId = document.getElementById('waPatientSelect').value;
+            const patient = patients.find(p => p.id === patientId);
+            if (!patient) return;
+
+            patient.contactName = document.getElementById('waContactName').value.trim();
+            patient.contactPhone = document.getElementById('waContactPhone').value.trim().replace(/\s+/g, '').replace('+', '');
+
+            let freq = '3days';
+            document.getElementsByName('waFrequency').forEach(r => { if (r.checked) freq = r.value; });
+
+            let mode = 'review';
+            document.getElementsByName('waDispatchMode').forEach(r => { if (r.checked) mode = r.value; });
+
+            let daysToAdd = 3;
+            if (freq === 'daily') daysToAdd = 1;
+            if (freq === 'weekly') daysToAdd = 7;
+            if (freq === 'manual') daysToAdd = null;
+
+            const nextDue = daysToAdd ? new Date(Date.now() + daysToAdd * 24 * 60 * 60 * 1000).toISOString() : null;
+
+            patient.waSchedule = {
+                frequency: freq,
+                mode: mode,
+                lastSent: patient.waSchedule ? patient.waSchedule.lastSent : null,
+                nextDue: nextDue
+            };
+
+            savePatientsToStorage();
+            onSelectPatientForWA();
+            showToast("Pauta de 3 días guardada");
+        }
+
+        // Generador asistido con firma indeleble de dannytens
+        async function generateAIReport() {
+            const patientId = document.getElementById('waPatientSelect').value;
+            const patient = patients.find(p => p.id === patientId);
+
+            if (!patient) {
+                showToast("Seleccione un paciente primero", true);
+                return;
+            }
+
+            const contactName = document.getElementById('waContactName').value.trim() || 'Familia';
+            const mood = document.getElementById('waMood').value;
+            const appetite = document.getElementById('waAppetite').value;
+            const hygiene = document.getElementById('waHygiene').value;
+            const draftBox = document.getElementById('waMessageDraft');
+            const genBtn = document.getElementById('btnGenerateAI');
+
+            genBtn.disabled = true;
+            genBtn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Redactando...</span>`;
+            lucide.createIcons();
+
+            // Sello y firma obligatoria de dannytens
+            const dannytensSignature = `\n\nCon mucho cariño y dedicación,\n🌸 dannytens · Técnico en Enfermería\n🩺 Informe Clínico Personalizado`;
+
+            try {
+                // Redacción empática cálida y sin tecnicismos
+                const sweetDraft = 
+`Hola ${contactName}, muy buenas tardes 🌸
+
+Le escribe dannytens para compartirle una actualización de cada 3 días sobre el estado de ${patient.name} (${patient.bed || 'en su habitación'}).
+
+Nos alegra mucho contarle que se encuentra muy bien y sereno/a:
+• Estado de ánimo: ${mood.toLowerCase()} 💙.
+• Signos vitales: Su presión arterial, oxigenación y temperatura están estables y en excelentes rangos.
+• Alimentación: ${appetite.toLowerCase()}.
+• Aseo y confort: ${hygiene.toLowerCase()}. Sus medicamentos han sido administrados de forma muy puntual ✨.
+
+Seguimos cuidándole con el mayor cariño y respeto para su pronta recuperación. Les mandamos un abrazo muy afectuoso a toda la familia.${dannytensSignature}`;
+
+                draftBox.value = sweetDraft;
+                showToast("Borrador firmado por dannytens");
+            } catch (err) {
+                console.error(err);
+            } finally {
+                genBtn.disabled = false;
+                genBtn.innerHTML = `<i data-lucide="wand-2" class="w-3.5 h-3.5"></i><span>Generar con dannytens</span>`;
+                lucide.createIcons();
+            }
+        }
+
+        function copyDraftToClipboard() {
+            const draft = document.getElementById('waMessageDraft').value;
+            if (!draft) return;
+
+            const temp = document.createElement("textarea");
+            temp.value = draft;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
+            showToast("Mensaje copiado");
+        }
+
+        function sendToWhatsAppDirect() {
+            const patientId = document.getElementById('waPatientSelect').value;
+            const patient = patients.find(p => p.id === patientId);
+
+            if (!patient) {
+                showToast("Seleccione un paciente", true);
+                return;
+            }
+
+            const phone = document.getElementById('waContactPhone').value.trim().replace(/\D/g, '');
+            let message = document.getElementById('waMessageDraft').value.trim();
+
+            if (!phone) {
+                showToast("Ingrese el número de teléfono para WhatsApp", true);
+                document.getElementById('waContactPhone').focus();
+                return;
+            }
+
+            if (!message) {
+                showToast("El mensaje está vacío. Genere el borrador primero.", true);
+                return;
+            }
+
+            // Ensure dannytens signature is never removed
+            if (!message.includes("dannytens")) {
+                message += "\n\n🌸 dannytens · Asistente Clínico";
+            }
+
+            if (!patient.waHistory) patient.waHistory = [];
+            const historyEntry = {
+                id: 'wa-' + Date.now(),
+                author: APP_AUTHOR,
+                date: new Date().toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
+                phone: phone,
+                contact: document.getElementById('waContactName').value || 'Familiar',
+                preview: message.substring(0, 90) + '...'
+            };
+            patient.waHistory.unshift(historyEntry);
+
+            if (!patient.waSchedule) patient.waSchedule = { frequency: '3days', mode: 'review' };
+            patient.waSchedule.lastSent = new Date().toISOString();
+
+            let daysToAdd = 3;
+            if (patient.waSchedule.frequency === 'daily') daysToAdd = 1;
+            if (patient.waSchedule.frequency === 'weekly') daysToAdd = 7;
+            if (patient.waSchedule.frequency === 'manual') daysToAdd = null;
+
+            if (daysToAdd) {
+                patient.waSchedule.nextDue = new Date(Date.now() + daysToAdd * 24 * 60 * 60 * 1000).toISOString();
+            }
+
+            savePatientsToStorage();
+            renderWAHistory(patient);
+            onSelectPatientForWA();
+
+            const encodedMsg = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${phone}?text=${encodedMsg}`;
+            window.open(waUrl, '_blank');
+
+            showToast("Abriendo WhatsApp");
+        }
+
+        function renderWAHistory(patient) {
+            const container = document.getElementById('waHistoryList');
+            if (!patient.waHistory || patient.waHistory.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5 text-pink-300 text-xs italic">
+                        No hay informes enviados previamente a este paciente.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = patient.waHistory.map(item => `
+                <div class="p-3 bg-pink-50/40 border border-pink-100 rounded-2xl text-xs space-y-1">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-pink-900 flex items-center space-x-1">
+                            <i data-lucide="check-check" class="w-3.5 h-3.5 text-pink-500"></i>
+                            <span>Enviado a ${item.contact} (+${item.phone})</span>
+                        </span>
+                        <span class="text-[10px] text-pink-400 font-semibold">${item.date}</span>
+                    </div>
+                    <p class="text-slate-600 italic text-[11px] line-clamp-1">${item.preview}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Background monitor for reminders
+        function checkScheduledReminders() {
+            let dueCount = 0;
+            const now = new Date();
+
+            patients.forEach(p => {
+                if (p.waSchedule && p.waSchedule.nextDue) {
+                    const dueDate = new Date(p.waSchedule.nextDue);
+                    if (now >= dueDate) {
+                        dueCount++;
+                    }
+                }
+            });
+
+            const badge = document.getElementById('waBadgeAlert');
+            if (badge) {
+                if (dueCount > 0) {
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        }
+
+        // --- 12. INITIALIZATION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPatientsFromStorage();
+            renderSymptomTags();
+            selectSymptom("dolor_toracico");
+            renderPatientsList();
+            renderDrugList(DRUGS_DATA);
+            renderInteractionCheckboxes();
+            populateWAPatientDropdown();
+            checkScheduledReminders();
+            setInterval(checkScheduledReminders, 60000);
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
